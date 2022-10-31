@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // Run Role Seeder
+        // Run Seeder Class
         $this->call([
             RoleSeeder::class,
+            LocationSeeder::class,
         ]);
 
         // Create user with "owner" privileges
