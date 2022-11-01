@@ -70,7 +70,9 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
-        //
+        return Inertia::render('Master/Location/Edit', [
+            'location' => $location
+        ]);
     }
 
     /**
@@ -82,7 +84,16 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'latitude' => 'required|max:200',
+            'longitude' => 'required|max:200',
+            'status' => 'required|in:active,inactive'
+        ]);
+
+        $location->update($request->only(['name', 'latitude', 'longitude', 'status']));
+
+        return to_route('locations.index')->with('message', 'Lokasi berhasil diperbarui');
     }
 
     /**

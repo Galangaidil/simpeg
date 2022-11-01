@@ -9,6 +9,9 @@ import {reactive, onMounted} from 'vue';
 import BackLink from '@/Components/BackLink.vue';
 import SuccessToast from '@/Components/SuccessToast.vue';
 
+
+const props = defineProps(['location']);
+
 const loading = reactive({
     OnLoading: false,
     showToast: false,
@@ -16,9 +19,10 @@ const loading = reactive({
 });
 
 const form = useForm({
-    name: null,
-    latitude: null,
-    longitude: null
+    name: props.location.name,
+    latitude: props.location.latitude,
+    longitude: props.location.longitude,
+    status: props.location.status
 })
 
 const getCurrentLocation = () => {
@@ -40,16 +44,16 @@ const showPosition = (position) => {
 }
 
 onMounted(() => {
-    const map = L.map('map').setView([-0.3977748, 101.6475163], 13);
+    const map = L.map('map').setView([props.location.latitude, props.location.longitude], 17);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const marker = L.marker([-0.3977748, 101.6475163]).addTo(map);
+    const marker = L.marker([props.location.latitude, props.location.longitude]).addTo(map);
 
-    marker.bindPopup('<b>Tauke Sawit Dhea Putri Mustafa</b>');
+    marker.bindPopup(`<b>${props.location.name}</b>`);
 
     const popup = L.popup();
 
@@ -78,9 +82,9 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center space-x-4">
-                <BackLink :href="route('locations.index')" />
+                <BackLink :href="route('locations.show', props.location.id)" />
 
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tambah Lokasi</h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Lokasi</h2>
             </div>
         </template>
 
@@ -90,7 +94,7 @@ onMounted(() => {
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="flex space-x-4 flex-col md:flex-row">
                             <div class="w-full md:w-1/3 px-4 py-2">
-                                <h2 class="text-2xl font-bold">Tambah lokasi</h2>
+                                <h2 class="text-2xl font-bold">Edit lokasi</h2>
 
                                 <div v-if="loading.showAlert" class="flex p-4 my-2 bg-green-100 rounded-lg" role="alert">
                                     <div class="ml-3 text-sm font-medium text-green-700">
@@ -115,7 +119,7 @@ onMounted(() => {
                                     </PrimaryButton>
                                 </div>
 
-                                <form @submit.prevent="form.post(route('locations.store'))">
+                                <form @submit.prevent="form.put(route('locations.update', props.location.id))">
                                     <div>
                                         <InputLabel for="name" value="Nama tempat"/>
                                         <TextInput id="name" type="text" class="mt-1 block w-full"
@@ -135,6 +139,15 @@ onMounted(() => {
                                         <TextInput id="longitude" type="text" class="mt-1 block w-full"
                                                    v-model="form.longitude"></TextInput>
                                         <InputError class="mt-2" :message="form.errors.longitude"/>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="status" value="Status"/>
+                                        <select id="status" v-model="form.status" class="w-full block mt-1 rounded-lg border border-gray-300">
+                                            <option value="inactive">Inactive</option>
+                                            <option value="active">Active</option>
+                                        </select>
+                                        <InputError class="mt-2" :message="form.errors.status" />
                                     </div>
 
                                     <div class="flex items-center justify-end mt-4">
