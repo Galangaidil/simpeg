@@ -17,9 +17,15 @@ class LocationSeeder extends Seeder
     {
         Location::create([
             'name' => 'Tauke Sawit Dhea Putri Mustafa',
-            'latitude' => -0.3977748,
-            'longitude' => 101.6475163,
+            'latitude' => '-0.3977748',
+            'longitude' => '101.6475163',
             'status' => 'active'
+        ]);
+
+        Location::create([
+            'name' => 'UTY Campus 1',
+            'latitude' => '-7.747424881612259',
+            'longitude' => '110.3554123613803',
         ]);
     }
 }
