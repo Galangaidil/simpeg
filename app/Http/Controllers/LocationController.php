@@ -57,7 +57,9 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        dd($location);
+        return Inertia::render('Master/Location/Show', [
+            'location' => $location
+        ]);
     }
 
     /**
@@ -91,6 +93,8 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
-        //
+        $location->delete();
+
+        return to_route('locations.index')->with('message', 'Lokasi berhasil dihapus');
     }
 }
