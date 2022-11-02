@@ -33,5 +33,6 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'verified'])->group(function (){
     Route::resources([
         'locations' => \App\Http\Controllers\LocationController::class,
+        'users' => \App\Http\Controllers\UserController::class,
     ]);
 });
