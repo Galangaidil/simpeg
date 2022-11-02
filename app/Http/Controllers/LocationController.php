@@ -27,6 +27,8 @@ class LocationController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Location::class);
+
         return Inertia::render('Master/Location/Create');
     }
 
@@ -38,6 +40,8 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Location::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'latitude' => 'required',
@@ -70,6 +74,8 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
+        $this->authorize('update', Location::class);
+
         return Inertia::render('Master/Location/Edit', [
             'location' => $location
         ]);
@@ -84,6 +90,8 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
+        $this->authorize('update', Location::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'latitude' => 'required|max:200',
@@ -104,6 +112,8 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
+        $this->authorize('delete', Location::class);
+
         $location->delete();
 
         return to_route('locations.index')->with('message', 'Lokasi berhasil dihapus');
