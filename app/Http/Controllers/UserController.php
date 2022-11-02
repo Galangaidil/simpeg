@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -100,11 +102,11 @@ class UserController extends Controller
     {
         $this->authorize('manage', User::class);
 
-        $request->validate([
+        Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required', 'string', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        ])->validate();
 
         $user->update([
             'name' => $request->name,
