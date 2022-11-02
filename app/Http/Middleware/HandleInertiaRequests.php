@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -45,6 +46,9 @@ class HandleInertiaRequests extends Middleware
             },
             'flash' => [
                 'message' => fn () => $request->session()->get('message')
+            ],
+            'permissions' => [
+                'manage' => $request->user() ? $request->user()->role_id == Role::isOwner : false
             ],
         ]);
     }

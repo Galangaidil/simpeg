@@ -7,7 +7,7 @@ import { reactive, computed } from 'vue';
 import TextInput from '@/Components/TextInput.vue';
 import SuccessToast from '@/Components/SuccessToast.vue';
 
-const props = defineProps(['locations']);
+const props = defineProps(['locations', 'permissions']);
 
 const create = () => {
   return Inertia.get(route('locations.create'));
@@ -34,7 +34,7 @@ const filteredItems = computed(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Pengaturan Lokasi
+                Lokasi
             </h2>
         </template>
 
@@ -46,7 +46,7 @@ const filteredItems = computed(() => {
                         <div class="flex justify-between items-center">
                             <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" placeholder="Cari lokasi"/>
 
-                            <PrimaryButton @click="create">
+                            <PrimaryButton v-if="permissions.manage" @click="create">
                                 Tambah
                             </PrimaryButton>
                         </div>
@@ -101,7 +101,7 @@ const filteredItems = computed(() => {
                         </div>
 
                         <div v-if="Object.keys(filteredItems).length == 0" class="text-center text-gray-500 mt-4 text-sm">
-                            Lokasi tidak ditemukan, coba <span class="text-blue-500 cursor-pointer" @click="create">tambah lokasi.</span>
+                            Lokasi tidak ditemukan. <span v-if="permissions.manage" class="text-blue-500 cursor-pointer" @click="create">Tambah lokasi</span>
                         </div>
 
                     </div>

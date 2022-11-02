@@ -51,7 +51,8 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <div class="text-gray-400 text-xs px-4 py-2 uppercase border-b">
-                                            Administrator
+                                            <span v-if="$page.props.permissions.manage">Pemilik</span>
+                                            <span v-else>Pegawai</span>
                                         </div>
                                         <DropdownLink :href="route('locations.index')" class="flex items-center space-x-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">

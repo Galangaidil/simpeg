@@ -78,7 +78,7 @@ const edit = (id) => {
 
                         <div id="map" class="w-full h-[400px] rounded mt-4"></div>
 
-                        <div class="mt-4 flex justify-between md:justify-end md:space-x-8 items-center">
+                        <div v-if="$page.props.permissions.manage" class="mt-4 flex justify-between md:justify-end md:space-x-8 items-center">
                             <PrimaryButton @click="edit(location.id)" class="flex justify-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                     <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
