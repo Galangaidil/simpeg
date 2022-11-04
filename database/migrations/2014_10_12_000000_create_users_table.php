@@ -22,6 +22,11 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('nip')->unique();
+            $table->string('phone_number')->nullable();
+            $table->text('address')->nullable();
+            $table->date('birthdate')->nullable();
+            $table->string('birthplace')->nullable();
         });
     }
 

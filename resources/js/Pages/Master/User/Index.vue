@@ -56,10 +56,16 @@ const filteredItems = computed(() => {
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="py-3 px-6">
+                                        NIP
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
                                         Nama
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        email
+                                        Email
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
+                                        Nomor HP
                                     </th>
                                     <th scope="col" class="py-3 px-6 sr-only">
                                         Aksi
@@ -69,10 +75,16 @@ const filteredItems = computed(() => {
                                 <tbody>
                                 <tr class="bg-white border-b hover:bg-gray-100 cursor-pointer" v-for="user in filteredItems" :key="user.id" @click="show(user.id)">
                                     <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ user.name }}
+                                        {{ user.nip }}
                                     </th>
                                     <td class="py-4 px-6">
+                                        {{ user.name }}
+                                    </td>
+                                    <td class="py-4 px-6">
                                         {{ user.email }}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        {{ user.phone_number }}
                                     </td>
                                     <td class="py-4 px-6 flex justify-end">
                                         <Link :href="route('users.show', user.id)">
