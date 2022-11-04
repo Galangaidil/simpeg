@@ -49,15 +49,25 @@ class UserController extends Controller
         $this->authorize('manage', User::class);
 
         $request->validate([
+            'nip' => 'required|string|max:16',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'birthdate' => 'nullable|date',
+            'birthplace' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:13',
+            'address' => 'nullable|string|max:255'
         ]);
 
         User::create([
+            'nip' => $request->nip,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'birthdate' => $request->birthdate,
+            'birthplace' => $request->birthplace,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address
         ]);
 
         return to_route('users.index')->with('message', 'Pengguna berhasil ditambahkan.');
@@ -71,6 +81,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('manage', User::class);
+
         return Inertia::render('Master/User/Show', [
             'user' => $user
         ]);
@@ -103,15 +115,25 @@ class UserController extends Controller
         $this->authorize('manage', User::class);
 
         Validator::make($request->all(), [
+            'nip' => 'required|string|max:16',
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'birthdate' => 'nullable|date',
+            'birthplace' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:13',
+            'address' => 'nullable|string|max:255'
         ])->validate();
 
         $user->update([
+            'nip' => $request->nip,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'birthdate' => $request->birthdate,
+            'birthplace' => $request->birthplace,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address
         ]);
 
         return to_route('users.index')->with('message', 'Pengguna berhasil diperbarui.');

@@ -10,10 +10,15 @@ import BackLink from '@/Components/BackLink.vue';
 const props = defineProps(['user'])
 
 const form = useForm({
+    nip: props.user.nip,
     name: props.user.name,
     email: props.user.email,
     password: null,
-    password_confirmation: null
+    password_confirmation: null,
+    birthdate: props.user.birthdate,
+    birthplace: props.user.birthplace,
+    phone_number: props.user.phone_number,
+    address: props.user.address
 })
 </script>
 
@@ -36,27 +41,69 @@ const form = useForm({
                         <div class="w-full md:max-w-md md:mx-auto px-4 py-2">
                             <h2 class="text-2xl font-bold mb-4">Edit pengguna</h2>
 
+                            <div class="text-base text-gray-500 mb-2">
+                                <span class="text-red-500">*</span> <span>Wajib diisi</span>
+                            </div>
+
                             <form @submit.prevent="form.put(route('users.update', props.user.id))">
+                                <div class="text-base text-gray-700 mb-2 font-bold">
+                                    Informasi pribadi
+                                </div>
+
                                 <div>
-                                    <InputLabel for="name" value="Nama"/>
+                                    <InputLabel for="name" value="Nama" :required-data="true"/>
                                     <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" />
                                     <InputError class="mt-2" :message="form.errors.name"/>
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="email" value="Email"/>
+                                    <InputLabel for="nip" value="NIP" :required-data="true"/>
+                                    <TextInput id="nip" type="number" class="mt-1 block w-full" v-model="form.nip" />
+                                    <InputError class="mt-2" :message="form.errors.nip"/>
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel for="birthdate" value="Tanggal lahir"/>
+                                    <TextInput id="birthdate" type="date" class="mt-1 block w-full" v-model="form.birthdate" />
+                                    <InputError class="mt-2" :message="form.errors.birthdate"/>
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel for="birthplace" value="Tempat lahir"/>
+                                    <TextInput id="birthplace" type="text" class="mt-1 block w-full" v-model="form.birthplace" />
+                                    <InputError class="mt-2" :message="form.errors.birthplace"/>
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel for="phone_number" value="Nomor HP"/>
+                                    <TextInput id="phone_number" type="text" class="mt-1 block w-full" v-model="form.phone_number" />
+                                    <InputError class="mt-2" :message="form.errors.phone_number"/>
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel for="address" value="Alamat"/>
+                                    <TextInput id="address" type="text" class="mt-1 block w-full py-10" v-model="form.address" />
+                                    <InputError class="mt-2" :message="form.errors.address"/>
+                                </div>
+
+                                <div class="text-base text-gray-700 my-4 font-bold">
+                                    Informasi login
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel for="email" value="Email" :required-data="true"/>
                                     <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
                                     <InputError class="mt-2" :message="form.errors.email"/>
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="password" value="Password"/>
+                                    <InputLabel for="password" value="Password" :required-data="true"/>
                                     <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" />
                                     <InputError class="mt-2" :message="form.errors.password"/>
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="password_confirmation" value="Konfirmasi password"/>
+                                    <InputLabel for="password_confirmation" value="Konfirmasi password" :required-data="true"/>
                                     <TextInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" />
                                     <InputError class="mt-2" :message="form.errors.password_confirmation"/>
                                 </div>

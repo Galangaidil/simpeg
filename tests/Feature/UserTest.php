@@ -48,6 +48,17 @@ class UserTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_user_with_role_pegawai_can_not_render_user_details()
+    {
+        $pegawai = User::factory()->create();
+
+        $this->actingAs($pegawai);
+
+        $this->followingRedirects()
+            ->get(route('users.show', $pegawai->id))
+            ->assertForbidden();
+    }
+
     public function test_user_with_role_pegawai_can_not_open_the_form_to_edit_user()
     {
         $pegawai = User::factory()->create();
@@ -141,6 +152,7 @@ class UserTest extends TestCase
 
         $this->followingRedirects()
             ->post(route('users.store'), [
+                'nip' => '12345678910',
                 'name' => 'test user',
                 'email' => 'test@kodegakure.com',
                 'password' => 'password',
@@ -154,6 +166,29 @@ class UserTest extends TestCase
             );
 
         $this->assertDatabaseHas('users', ['email' => 'test@kodegakure.com']);
+    }
+
+    public function test_user_with_role_owner_can_render_user_details()
+    {
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
+
+        $pegawai = User::factory()->create();
+
+        $this->actingAs($owner);
+
+        $this->followingRedirects()
+            ->get(route('users.show', $pegawai->id))
+            ->assertOk()
+            ->assertInertia(fn(AssertableInertia $page) => $page
+                ->component('Master/User/Show')
+                ->where('user.name', $pegawai->name)
+                ->where('user.email', $pegawai->email)
+                ->where('user.nip', $pegawai->nip)
+                ->where('user.phone_number', $pegawai->phone_number)
+                ->where('user.address', $pegawai->address)
+                ->where('user.birthdate', $pegawai->birthdate)
+                ->where('user.birthplace', $pegawai->birthplace)
+            );
     }
 
     public function test_user_with_role_owner_can_open_the_form_to_edit_user()
@@ -180,6 +215,7 @@ class UserTest extends TestCase
 
         $this->followingRedirects()
             ->put(route('users.update', $pegawai->id), [
+                'nip' => '123123123123',
                 'name' => 'test update user',
                 'email' => 'newemail@kodegakure.com',
                 'password' => 'new password',
@@ -225,16 +261,68 @@ class UserTest extends TestCase
 
     // Test for owner end
 
-    public function test_user_details_can_be_rendered()
+    // Test validating data
+    public function test_required_input_should_not_be_empty()
     {
-        $pegawai = User::factory()->create();
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
 
-        $this->actingAs($pegawai);
+        $this->actingAs($owner);
 
         $this->followingRedirects()
-            ->get(route('users.show', $pegawai->id))
-            ->assertOk()
-            ->assertInertia(fn(AssertableInertia $page) => $page->component('Master/User/Show'));
+            ->post(route('users.store'))
+            ->assertInertia(fn(AssertableInertia $page) => $page
+                ->where('errors.nip', 'The nip field is required.')
+                ->where('errors.name', 'The name field is required.')
+                ->where('errors.email', 'The email field is required.')
+                ->where('errors.password', 'The password field is required.')
+            );
+    }
+
+    public function test_throw_an_error_if_nip_greater_than_16_characters()
+    {
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
+
+        $this->actingAs($owner);
+
+        $this->followingRedirects()
+            ->post(route('users.store'), [
+                'nip' => '123123123123123123'
+            ])
+            ->assertInertia(fn(AssertableInertia $page) => $page
+                ->where('errors.nip', 'The nip must not be greater than 16 characters.')
+            );
+    }
+
+    public function test_throw_an_error_when_email_has_already_been_taken()
+    {
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
+
+        $pegawai = User::factory()->create();
+
+        $this->actingAs($owner);
+
+        $this->followingRedirects()
+            ->post(route('users.store'), [
+                'email' => $pegawai->email
+            ])
+            ->assertInertia(fn(AssertableInertia $page) => $page
+                ->where('errors.email', 'The email has already been taken.')
+            );
+    }
+
+    public function test_do_not_throw_an_error_if_email_not_change()
+    {
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
+
+        $pegawai = User::factory()->create();
+
+        $this->actingAs($owner);
+
+        $this->followingRedirects()
+            ->put(route('users.update', $pegawai->id), [
+                'email' => $pegawai->email
+            ])
+            ->assertOk();
     }
 
 
