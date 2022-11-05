@@ -20,5 +20,25 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        // Run Seeder Class
+        $this->call([
+            RoleSeeder::class,
+            LocationSeeder::class,
+            ConfigurationSeeder::class
+        ]);
+
+        // Create user with "owner" privileges
+         \App\Models\User::factory()->create([
+             'name' => 'Mustafa',
+             'email' => 'mustafa@kodegakure.com',
+             'role_id' => 1
+         ]);
+
+        // Create user with "pegawai" privileges
+        \App\Models\User::factory()->create([
+            'name' => 'Dodit',
+            'email' => 'dodit@kodegakure.com',
+        ]);
     }
 }
