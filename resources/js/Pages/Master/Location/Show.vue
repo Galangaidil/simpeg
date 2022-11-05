@@ -62,7 +62,7 @@ const edit = (id) => {
                             </div>
 
                             <div>
-                                <span class="text-gray-500 text-sm">Latitude</span>
+                                <span class="text-gray-500 text-sm">Longitude</span>
                                 <div class="text-gray-700 font-semibold">{{ location.longitude }}</div>
                             </div>
 

@@ -22,7 +22,6 @@ const form = useForm({
     name: props.location.name,
     latitude: props.location.latitude,
     longitude: props.location.longitude,
-    status: props.location.status
 })
 
 const getCurrentLocation = () => {
@@ -139,15 +138,6 @@ onMounted(() => {
                                         <TextInput id="longitude" type="text" class="mt-1 block w-full"
                                                    v-model="form.longitude"></TextInput>
                                         <InputError class="mt-2" :message="form.errors.longitude"/>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel for="status" value="Status"/>
-                                        <select id="status" v-model="form.status" class="w-full block mt-1 rounded-lg border border-gray-300">
-                                            <option value="inactive">Inactive</option>
-                                            <option value="active">Active</option>
-                                        </select>
-                                        <InputError class="mt-2" :message="form.errors.status" />
                                     </div>
 
                                     <div class="flex items-center justify-end mt-4">

@@ -145,7 +145,6 @@ class LocationTest extends TestCase
                 'name' => 'Something new',
                 'latitude' => rand(90, 90),
                 'longitude' => rand(-180, 180),
-                'status' => 'active'
             ])
             ->assertOk()
             ->assertInertia(fn(AssertableInertia $page) => $page
@@ -201,7 +200,6 @@ class LocationTest extends TestCase
                 ->where('errors.name', 'The name field is required.')
                 ->where('errors.latitude', 'The latitude field is required.')
                 ->where('errors.longitude', 'The longitude field is required.')
-                ->where('errors.status', 'The status field is required.')
             );
     }
 
