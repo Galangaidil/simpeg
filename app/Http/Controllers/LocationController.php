@@ -96,10 +96,9 @@ class LocationController extends Controller
             'name' => 'required|string|max:255',
             'latitude' => 'required|max:200',
             'longitude' => 'required|max:200',
-            'status' => 'required|in:active,inactive'
         ]);
 
-        $location->update($request->only(['name', 'latitude', 'longitude', 'status']));
+        $location->update($request->only(['name', 'latitude', 'longitude']));
 
         return to_route('locations.index')->with('message', 'Lokasi berhasil diperbarui');
     }

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             LocationSeeder::class,
+            ConfigurationSeeder::class
         ]);
 
         // Create user with "owner" privileges

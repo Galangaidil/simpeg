@@ -35,4 +35,6 @@ Route::middleware(['auth', 'verified'])->group(function (){
         'locations' => \App\Http\Controllers\LocationController::class,
         'users' => \App\Http\Controllers\UserController::class,
     ]);
+
+    Route::resource('configurations', \App\Http\Controllers\ConfigurationController::class)->only(['index', 'edit', 'update']);
 });
