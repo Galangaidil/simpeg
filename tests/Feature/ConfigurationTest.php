@@ -21,7 +21,7 @@ class ConfigurationTest extends TestCase
 
         $this->actingAs($owner);
 
-        Configuration::factory()->create(['id' => 1]);
+        Configuration::factory()->create();
 
         $this->followingRedirects()
             ->get(route('configurations.index'))
@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
 
         $this->actingAs($owner);
 
-        $conf = Configuration::factory()->create(['id' => 3]);
+        $conf = Configuration::factory()->create();
 
         $this->followingRedirects()
             ->get(route('configurations.edit', $conf->id))
@@ -51,7 +51,7 @@ class ConfigurationTest extends TestCase
     {
         $owner = User::factory()->create(['role_id' => Role::isOwner]);
 
-        $conf = Configuration::factory()->create(['id' => 4]);
+        $conf = Configuration::factory()->create();
 
         $this->actingAs($owner);
 
@@ -71,7 +71,7 @@ class ConfigurationTest extends TestCase
 
         $owner = User::factory()->create(['role_id' => Role::isOwner]);
 
-        $conf = Configuration::factory()->create(['id' => 1]);
+        $conf = Configuration::factory()->create();
 
         $this->actingAs($owner);
 
