@@ -6,17 +6,32 @@ use App\Models\OffWork;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class OffWorkController extends Controller
 {
     public function index()
     {
-        // dd(Carbon::today()->toDateString());
-        $offWork = OffWork::where('created_at', Carbon::today()->toDateString())->get();
+        $offWorks = OffWork::whereDate('created_at', Carbon::today()->toDateString())->get();
+
+        $limitReason = $offWorks->map(function($item) {
+            return [
+                'id' => $item->id,
+                'user_id' => $item->user_id,
+                'start_date' => $item->start_date,
+                'finish_date' => $item->finish_date,
+                'reason' => Str::limit($item->reason, 30, '...'),
+                'document' => $item->document,
+                'status' => $item->status,
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+                'user_name' => $item->user->name
+            ];
+        });
 
         return Inertia::render('Offwork/Index', [
-            'offworks' => $offWork
+            'offworks' => $limitReason
         ]);
     }
 

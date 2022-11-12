@@ -17,8 +17,8 @@ class OffWorkFactory extends Factory
     public function definition()
     {
         return [
-            'start_date' => fake()->date(),
-            'finish_date' => fake()->date(),
+            'start_date' => fake()->dateTimeThisMonth(),
+            'finish_date' => fake()->dateTimeThisMonth('+2 weeks'),
             'reason' => fake()->text()
         ];
     }
