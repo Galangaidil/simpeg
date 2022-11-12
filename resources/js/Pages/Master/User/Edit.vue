@@ -58,7 +58,7 @@ const form = useForm({
 
                                 <div class="mt-4">
                                     <InputLabel for="nip" value="NIP" :required-data="true"/>
-                                    <TextInput id="nip" type="number" class="mt-1 block w-full" v-model="form.nip" />
+                                    <TextInput id="nip" type="text" class="mt-1 block w-full" v-model="form.nip" />
                                     <InputError class="mt-2" :message="form.errors.nip"/>
                                 </div>
 
