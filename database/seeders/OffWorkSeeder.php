@@ -15,7 +15,7 @@ class OffWorkSeeder extends Seeder
      */
     public function run()
     {
-        OffWork::factory()->count(3)->forUser([
+        OffWork::factory()->count(1)->forUser([
             'name' => 'Didot'
         ])->create();
     }

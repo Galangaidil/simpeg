@@ -6,6 +6,8 @@ use App\Models\OffWork;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -22,7 +24,7 @@ class OffWorkTest extends TestCase
         $this->followingRedirects()
             ->get(route('offworks.index'))
             ->assertOk()
-            ->assertInertia(fn (AssertableInertia $assertableInertia) => $assertableInertia->component('Offwork/Index'));
+            ->assertInertia(fn(AssertableInertia $assertableInertia) => $assertableInertia->component('Offwork/Index'));
     }
 
     public function test_off_work_create_screen_can_be_rendered()
@@ -34,7 +36,7 @@ class OffWorkTest extends TestCase
         $this->followingRedirects()
             ->get(route('offworks.create'))
             ->assertOk()
-            ->assertInertia(fn (AssertableInertia $assertableInertia) => $assertableInertia->component('Offwork/Create'));
+            ->assertInertia(fn(AssertableInertia $assertableInertia) => $assertableInertia->component('Offwork/Create'));
     }
 
     public function test_insert_new_off_work()
@@ -43,15 +45,20 @@ class OffWorkTest extends TestCase
 
         $this->actingAs($user);
 
+        Storage::fake('local');
+
+        $file = UploadedFile::fake()->image('avatar.jpg');
+
         $this->followingRedirects()
             ->post(route('offworks.store'), [
                 'start_date' => '2022-11-09',
                 'finish_date' => '2022-11-12',
                 'reason' => "I'm sick",
+                'document' => $file
             ])
             ->assertOk()
             ->assertInertia(
-                fn (AssertableInertia $assertableInertia) => $assertableInertia
+                fn(AssertableInertia $assertableInertia) => $assertableInertia
                     ->where('errors', [])
                     ->component('Offwork/Index')
                     ->where('flash.message', 'Permohonan cuti berhasil dibuat.')
@@ -61,8 +68,10 @@ class OffWorkTest extends TestCase
             'user_id' => $user->id,
             'start_date' => '2022-11-09',
             'finish_date' => '2022-11-12',
-            'reason' => "I'm sick"
+            'reason' => "I'm sick",
         ]);
+
+        Storage::disk('local')->assertExists('public/offworks/' . $file->hashName());
     }
 
     public function test_show_off_work()
@@ -76,7 +85,7 @@ class OffWorkTest extends TestCase
         $this->followingRedirects()
             ->get(route('offworks.show', $offWorks->id))
             ->assertOk()
-            ->assertInertia(fn (AssertableInertia $assertableInertia) => $assertableInertia->component('Offwork/Show'));
+            ->assertInertia(fn(AssertableInertia $assertableInertia) => $assertableInertia->component('Offwork/Show'));
     }
 
     public function test_form_edit_off_work_can_be_rendered()
@@ -112,7 +121,7 @@ class OffWorkTest extends TestCase
                 ->where('errors', [])
                 ->where('flash.message', 'Permohonan cuti berhasil diperbarui.')
                 ->component('Offwork/Index')
-        );
+            );
 
         $this->assertDatabaseHas('off_works', [
             'user_id' => $offWorks->user_id,
@@ -137,6 +146,10 @@ class OffWorkTest extends TestCase
                 ->where('errors', [])
                 ->where('flash.message', 'Permohonan cuti berhasil dihapus.')
                 ->component('Offwork/Index')
-        );
+            );
+
+        $this->assertDatabaseMissing('off_works', [
+            'id' => $offWorks->id
+        ]);
     }
 }

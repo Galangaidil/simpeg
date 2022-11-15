@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\OffWork;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -45,46 +45,56 @@ class OffWorkController extends Controller
         $validated = $request->validate([
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
-            'reason' => 'required|string|max:250',
-            'document' => 'nullable|string'
+            'reason' => 'required|string|max:1000',
+            'document' => 'required|image'
         ]);
+
+        $path = $request->file('document')->store('public/offworks');
+
+        $validated['document'] = $path;
 
         $request->user()->offworks()->create($validated);
 
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil dibuat.');
     }
 
-    public function show(OffWork $offWork)
+    public function show(OffWork $offwork)
     {
+        $offwork['document'] = Storage::url($offwork->document);
+        $offwork['user'] = $offwork->user;
+
         return Inertia::render('Offwork/Show', [
-            'offwork' => $offWork
+            'offwork' => $offwork
         ]);
     }
 
-    public function edit(OffWork $offWork)
+    public function edit(OffWork $offwork)
     {
+        $offwork['document_url'] = Storage::url($offwork->document);
+
         return Inertia::render('Offwork/Edit', [
-            'offwork' => $offWork
+            'offwork' => $offwork
         ]);
     }
 
-    public function update(Request $request, OffWork $offWork)
+    public function update(Request $request, OffWork $offwork)
     {
         $validated = $request->validate([
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
-            'reason' => 'required|string|max:250',
-            'document' => 'nullable|string'
+            'reason' => 'required|string|max:1000',
         ]);
 
-        $request->user()->offworks()->update($validated);
+        $offwork->update($validated);
 
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil diperbarui.');
     }
 
-    public function destroy(OffWork $offWork)
+    public function destroy(OffWork $offwork)
     {
-        $offWork->delete();
+        Storage::delete($offwork->document);
+
+        $offwork->delete();
 
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil dihapus.');
     }
