@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OffWorkController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::resources([
         'locations' => \App\Http\Controllers\LocationController::class,
         'users' => \App\Http\Controllers\UserController::class,
+        'offworks' => OffWorkController::class,
     ]);
 
     Route::resource('configurations', \App\Http\Controllers\ConfigurationController::class)->only(['index', 'edit', 'update']);
