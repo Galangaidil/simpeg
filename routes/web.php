@@ -39,4 +39,5 @@ Route::middleware(['auth', 'verified'])->group(function (){
     ]);
 
     Route::resource('configurations', \App\Http\Controllers\ConfigurationController::class)->only(['index', 'edit', 'update']);
+    Route::put('/offworks/{offwork}/updateStatus', [OffWorkController::class, 'updateStatus'])->name('offworks.updateStatus');
 });
