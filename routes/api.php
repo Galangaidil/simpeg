@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('/v1')->group(function(){
-    Route::post('/login', [ApiAuthController::class, 'login']);
+    Route::post('/login', [ApiAuthController::class, 'login'])->name('v1.auth.login');
 
     Route::middleware('auth:sanctum')->group(function(){
         Route::get('/user', function(Request $request){
             return $request->user();
-        });
+        })->name('v1.auth.userProfile');
 
-        Route::post('/logout', [ApiAuthController::class, 'logout']);
+        Route::post('/logout', [ApiAuthController::class, 'logout'])->name('v1.auth.logout');
     });
 });
