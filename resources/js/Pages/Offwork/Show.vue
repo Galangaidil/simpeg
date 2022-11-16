@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head} from '@inertiajs/inertia-vue3';
+import {Head, useForm} from '@inertiajs/inertia-vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import BackLink from '@/Components/BackLink.vue';
 import {Inertia} from '@inertiajs/inertia';
@@ -8,8 +8,9 @@ import DangerButton from '@/Components/DangerButton.vue';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import localeid from 'dayjs/locale/id';
+import SuccessToast from '@/Components/SuccessToast.vue';
 
-const props = defineProps(['offwork']);
+const props = defineProps(['offwork', 'options']);
 
 const edit = (id) => {
     return Inertia.get(route('offworks.edit', id));
@@ -25,6 +26,14 @@ const formatTime = (time) => {
     dayjs.extend(localizedFormat);
     dayjs.locale(localeid);
     return dayjs(time).format('LLLL');
+}
+
+const form = useForm({
+    'status': props.offwork.status
+})
+
+const updateStatus = () => {
+    return Inertia.put(route('offworks.updateStatus', props.offwork.id), form);
 }
 
 </script>
@@ -50,6 +59,10 @@ const formatTime = (time) => {
                                 <h2 class="text-2xl font-bold mb-4 lg:mb-0">Detail pengajuan cuti</h2>
 
                                 <div class="hidden lg:flex items-center space-x-4">
+                                    <select v-model="form.status" @change="updateStatus" class="text-gray-500 capitalize rounded border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200">
+                                        <option v-for="option in props.options" :value="option">{{ option }}</option>
+                                    </select>
+
                                     <PrimaryButton @click="edit(props.offwork.id)" class="flex items-center space-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                             <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
@@ -143,5 +156,8 @@ const formatTime = (time) => {
                 </div>
             </div>
         </div>
+
+        <SuccessToast v-if="$page.props.flash.message" :message="$page.props.flash.message"/>
+
     </AuthenticatedLayout>
 </template>

@@ -21,4 +21,7 @@ class OffWork extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public const optionStatus = ['menunggu', 'diproses', 'ditolak', 'disetujui'];
+
 }

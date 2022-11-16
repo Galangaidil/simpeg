@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 
 class OffWorkController extends Controller
 {
@@ -64,7 +65,8 @@ class OffWorkController extends Controller
         $offwork['user'] = $offwork->user;
 
         return Inertia::render('Offwork/Show', [
-            'offwork' => $offwork
+            'offwork' => $offwork,
+            'options' => OffWork::optionStatus
         ]);
     }
 
@@ -97,5 +99,16 @@ class OffWorkController extends Controller
         $offwork->delete();
 
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil dihapus.');
+    }
+
+    public function updateStatus(Request $request, OffWork $offwork)
+    {
+        $request->validate([
+            'status' => ['required', Rule::in(OffWork::optionStatus)]
+        ]);
+
+        $offwork->update($request->only('status'));
+
+        return redirect(route('offworks.show', $offwork->id))->with('message', 'Pengajuan cuti berhasil diperbarui');
     }
 }

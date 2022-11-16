@@ -152,4 +152,52 @@ class OffWorkTest extends TestCase
             'id' => $offWorks->id
         ]);
     }
+
+    public function test_status_off_work_can_not_be_random()
+    {
+        $user = User::factory()->create();
+
+        $offwork = OffWork::factory()->for($user)->create();
+
+        $this->actingAs($user);
+
+        $this->followingRedirects()
+            ->put(route('offworks.updateStatus', $offwork->id), [
+                'status' => 'random_status'
+            ])
+            ->assertOk()
+            ->assertInertia(fn(AssertableInertia $assertableInertia) => $assertableInertia
+                ->where('errors.status', 'The selected status is invalid.')
+            );
+
+        $this->assertDatabaseHas('off_works', [
+            'id' => $offwork->id,
+            'status' => 'menunggu'
+        ]);
+    }
+
+    public function test_update_status_off_work()
+    {
+        $user = User::factory()->create();
+
+        $offwork = OffWork::factory()->for($user)->create();
+
+        $this->actingAs($user);
+
+        $this->followingRedirects()
+            ->put(route('offworks.updateStatus', $offwork->id), [
+                'status' => 'disetujui'
+            ])
+            ->assertOk()
+            ->assertInertia(fn(AssertableInertia $assertableInertia) => $assertableInertia
+                ->where('errors', [])
+            );
+
+        $this->assertDatabaseHas('off_works', [
+            'id' => $offwork->id,
+            'status' => 'disetujui'
+        ]);
+    }
+
+
 }
