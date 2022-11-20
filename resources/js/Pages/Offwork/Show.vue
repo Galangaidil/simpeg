@@ -59,7 +59,7 @@ const updateStatus = () => {
                                 <h2 class="text-2xl font-bold mb-4 lg:mb-0">Detail pengajuan cuti</h2>
 
                                 <div class="hidden lg:flex items-center space-x-4">
-                                    <select v-model="form.status" @change="updateStatus" class="text-gray-500 capitalize rounded border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200">
+                                    <select v-if="$page.props.permissions.manage" v-model="form.status" @change="updateStatus" class="text-gray-500 capitalize rounded border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200">
                                         <option v-for="option in props.options" :value="option">{{ option }}</option>
                                     </select>
 
