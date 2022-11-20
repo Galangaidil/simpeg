@@ -51,13 +51,13 @@ const data = reactive({photoContainer: null})
                             <form @submit.prevent="form.post(route('offworks.store'))">
 
                                 <div>
-                                    <InputLabel for="start_date" value="Tanggal mulai" :required-data="true"/>
+                                    <InputLabel for="start_date" value="Tanggal mulai cuti" :required-data="true"/>
                                     <TextInput id="start_date" type="date" class="mt-1 block w-full" v-model="form.start_date" />
                                     <InputError class="mt-2" :message="form.errors.start_date"/>
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="finish_date" value="Tanggal selesai" :required-data="true"/>
+                                    <InputLabel for="finish_date" value="Tanggal selesai cuti" :required-data="true"/>
                                     <TextInput id="finish_date" type="date" class="mt-1 block w-full" v-model="form.finish_date" />
                                     <InputError class="mt-2" :message="form.errors.finish_date"/>
                                 </div>

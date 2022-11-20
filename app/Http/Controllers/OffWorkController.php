@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OffWork;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +15,13 @@ class OffWorkController extends Controller
 {
     public function index()
     {
-        $offWorks = OffWork::whereDate('created_at', Carbon::today()->toDateString())->get();
+        $user = auth()->user();
+
+        if ($user->role_id === Role::isOwner) {
+            $offWorks = OffWork::latest()->get();
+        } else {
+            $offWorks = $user->offworks()->latest()->get();
+        }
 
         $limitReason = $offWorks->map(function($item) {
             return [
@@ -61,7 +68,10 @@ class OffWorkController extends Controller
 
     public function show(OffWork $offwork)
     {
+        $this->authorize('view', $offwork);
+
         $offwork['document'] = Storage::url($offwork->document);
+
         $offwork['user'] = $offwork->user;
 
         return Inertia::render('Offwork/Show', [
@@ -72,6 +82,8 @@ class OffWorkController extends Controller
 
     public function edit(OffWork $offwork)
     {
+        $this->authorize('update', $offwork);
+
         $offwork['document_url'] = Storage::url($offwork->document);
 
         return Inertia::render('Offwork/Edit', [
@@ -81,6 +93,8 @@ class OffWorkController extends Controller
 
     public function update(Request $request, OffWork $offwork)
     {
+        $this->authorize('update', $offwork);
+
         $validated = $request->validate([
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
@@ -94,6 +108,8 @@ class OffWorkController extends Controller
 
     public function destroy(OffWork $offwork)
     {
+        $this->authorize('delete', $offwork);
+
         Storage::delete($offwork->document);
 
         $offwork->delete();
@@ -103,6 +119,8 @@ class OffWorkController extends Controller
 
     public function updateStatus(Request $request, OffWork $offwork)
     {
+        $this->authorize('updateStatus', $offwork);
+
         $request->validate([
             'status' => ['required', Rule::in(OffWork::optionStatus)]
         ]);
