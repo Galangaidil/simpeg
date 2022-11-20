@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\OffWork;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -155,7 +156,7 @@ class OffWorkTest extends TestCase
 
     public function test_status_off_work_can_not_be_random()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role_id' => Role::isOwner]);
 
         $offwork = OffWork::factory()->for($user)->create();
 
@@ -178,7 +179,7 @@ class OffWorkTest extends TestCase
 
     public function test_update_status_off_work()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role_id' => Role::isOwner]);
 
         $offwork = OffWork::factory()->for($user)->create();
 
@@ -197,6 +198,21 @@ class OffWorkTest extends TestCase
             'id' => $offwork->id,
             'status' => 'disetujui'
         ]);
+    }
+
+    public function test_pegawai_can_not_update_the_status()
+    {
+        $user = User::factory()->create();
+
+        $offwork = OffWork::factory()->for($user)->create();
+
+        $this->actingAs($user);
+
+        $this->followingRedirects()
+            ->put(route('offworks.updateStatus', $offwork->id), [
+                'status' => 'disetujui'
+            ])
+            ->assertForbidden();
     }
 
 
