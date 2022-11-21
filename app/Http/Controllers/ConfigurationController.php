@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Configuration;
 use App\Models\Location;
 use App\Models\User;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ConfigurationController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +21,7 @@ class ConfigurationController extends Controller
      */
     public function index()
     {
-        $this->authorize('manage', User::class);
+        $this->authorize('manage', auth()->user());
 
         $configuration = Configuration::find(1);
 
@@ -121,5 +124,17 @@ class ConfigurationController extends Controller
     public function destroy(Configuration $configuration)
     {
         //
+    }
+
+    public function getCurrentConf()
+    {
+        $configuration = Configuration::find(1);
+
+        $location = Location::find($configuration->location);
+
+        return $this->success([
+            'configuration' => $configuration,
+            'location' => $location
+        ], "Konfigurasi berhasil didapatkan");
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiAuthController;
+use App\Http\Controllers\ConfigurationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,7 @@ Route::prefix('/v1')->group(function(){
         })->name('v1.auth.userProfile');
 
         Route::post('/logout', [ApiAuthController::class, 'logout'])->name('v1.auth.logout');
+
+        Route::get('/getCurrentConf', [ConfigurationController::class, 'getCurrentConf'])->name('v1.conf.getCurrentConf');
     });
 });
