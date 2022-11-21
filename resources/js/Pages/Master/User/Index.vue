@@ -14,7 +14,8 @@ const create = () => {
 }
 
 const data = reactive({
-    search: ''
+    search: '',
+    title: 'Pegawai'
 })
 
 const show = (id) => {
@@ -29,12 +30,12 @@ const filteredItems = computed(() => {
 </script>
 
 <template>
-    <Head title="Pengguna" />
+    <Head :title="data.title" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Pengguna
+                {{ data.title }}
             </h2>
         </template>
 
@@ -44,7 +45,7 @@ const filteredItems = computed(() => {
                     <div class="p-6 bg-white border-b border-gray-200">
 
                         <div class="flex justify-between items-center">
-                            <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" placeholder="Cari pengguna"/>
+                            <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" :placeholder="'Cari ' + data.title"/>
 
                             <PrimaryButton v-if="permissions.manage" @click="create">
                                 Tambah
@@ -99,7 +100,7 @@ const filteredItems = computed(() => {
                         </div>
 
                         <div v-if="Object.keys(filteredItems).length == 0" class="text-center text-gray-500 mt-4 text-sm">
-                            Pengguna tidak ditemukan. <span v-if="permissions.manage" class="text-blue-500 cursor-pointer" @click="create">Tambah pengguna</span>
+                            {{ data.title }} tidak ditemukan. <span v-if="permissions.manage" class="text-blue-500 cursor-pointer" @click="create">Tambah {{ data.title }}</span>
                         </div>
 
                     </div>
