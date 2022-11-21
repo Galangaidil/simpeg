@@ -70,7 +70,7 @@ class UserController extends Controller
             'address' => $request->address
         ]);
 
-        return to_route('users.index')->with('message', 'Pengguna berhasil ditambahkan.');
+        return to_route('users.index')->with('message', 'Pegawai berhasil ditambahkan.');
     }
 
     /**
@@ -136,7 +136,7 @@ class UserController extends Controller
             'address' => $request->address
         ]);
 
-        return to_route('users.index')->with('message', 'Pengguna berhasil diperbarui.');
+        return to_route('users.index')->with('message', 'Pegawai berhasil diperbarui.');
     }
 
     /**
@@ -151,6 +151,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return to_route('users.index')->with('message', 'Pengguna berhasil dihapus.');
+        return to_route('users.index')->with('message', 'Pegawai berhasil dihapus.');
     }
 }

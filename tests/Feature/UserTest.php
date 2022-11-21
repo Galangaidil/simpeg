@@ -162,7 +162,7 @@ class UserTest extends TestCase
             ->assertInertia(fn(AssertableInertia $page) => $page
                 ->component('Master/User/Index')
                 ->where('errors', [])
-                ->where('flash.message', 'Pengguna berhasil ditambahkan.')
+                ->where('flash.message', 'Pegawai berhasil ditambahkan.')
             );
 
         $this->assertDatabaseHas('users', ['email' => 'test@kodegakure.com']);
@@ -225,7 +225,7 @@ class UserTest extends TestCase
             ->assertInertia(fn(AssertableInertia $page) => $page
                 ->where('errors', [])
                 ->component('Master/User/Index')
-                ->where('flash.message', 'Pengguna berhasil diperbarui.')
+                ->where('flash.message', 'Pegawai berhasil diperbarui.')
             );
 
         $this->assertDatabaseHas('users', [
@@ -251,7 +251,7 @@ class UserTest extends TestCase
             ->assertInertia(fn(AssertableInertia $page) => $page
                 ->component('Master/User/Index')
                 ->where('errors', [])
-                ->where('flash.message', 'Pengguna berhasil dihapus.')
+                ->where('flash.message', 'Pegawai berhasil dihapus.')
             );
 
         $this->assertDatabaseMissing('users', [
