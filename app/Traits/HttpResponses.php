@@ -22,4 +22,11 @@ trait HttpResponses
             'data' => $data
         ], $code);
     }
+
+    protected function simple($message)
+    {
+        return response()->json([
+            'message' => $message
+        ]);
+    }
 }

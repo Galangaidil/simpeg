@@ -30,15 +30,14 @@ class ApiAuthController extends Controller
 
         return $this->success([
             'token' => $user->createToken($request->device_name)->plainTextToken,
-        ], 'Login success');
+            'user_name' => $user->name
+        ], 'Login success', 200);
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return $this->success([
-            'message' => 'Logout success dan token telah dihapus'
-        ]);
+        return $this->simple("Logout success");
     }
 }
