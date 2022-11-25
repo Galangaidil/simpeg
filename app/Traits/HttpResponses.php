@@ -15,7 +15,7 @@ trait HttpResponses
         ], $code);
     }
 
-    protected function errors($data, $message = null, $code)
+    protected function errors($message, $data, $code = 422)
     {
         return response()->json([
             'message' => $message,

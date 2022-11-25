@@ -68,3 +68,39 @@
     "birthplace": "string"
 }
 ```
+
+## Attendance
+
+### Create Attendance
+
+- Method: `POST`
+- Endpoint: `api/v1/attendances`
+- Header:
+  - Authorization : Bearer token
+  - Accept: application/json
+  - Content-Type: application/json
+- Body:
+
+```json
+{
+    "time" : "date",
+    "latitude" : "double",
+    "longitude" : "double"
+}
+```
+
+- Response:
+
+```json
+{
+    "message" : "string",
+    "data" : {
+        "id" : "int",
+        "user_id" : "int",
+        "time" : "date",
+        "status" : "string",
+        "created_at" : "date",
+        "updated_at" : "date"
+    }
+}
+```

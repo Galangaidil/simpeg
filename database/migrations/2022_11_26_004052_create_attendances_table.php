@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('configurations', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->integer('salary');
-            $table->integer('workday');
-            $table->integer('location');
-            $table->integer('accepted_distance');
-            $table->string('start');
-            $table->string('end');
+            $table->string('latitude');
+            $table->string('longitude');
+            $table->float('distance');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('configurations');
+        Schema::dropIfExists('attendances');
     }
 };

@@ -13,7 +13,9 @@ const form = useForm({
     salary: props.configuration.salary,
     workday: props.configuration.workday,
     location: props.configuration.location,
-    accepted_distance: props.configuration.accepted_distance
+    accepted_distance: props.configuration.accepted_distance,
+    start: props.configuration.start,
+    end: props.configuration.end,
 })
 </script>
 
@@ -65,9 +67,23 @@ const form = useForm({
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="birthplace" value="Jarak yang diterima untuk melakukan presensi" :required-data="true"/>
+                                    <InputLabel for="birthplace" value="Radius presensi" :required-data="true"/>
                                     <TextInput id="birthplace" type="number" class="mt-1 block w-full" v-model="form.accepted_distance" />
                                     <InputError class="mt-2" :message="form.errors.accepted_distance"/>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-10 mt-4">
+                                    <div>
+                                        <InputLabel for="start" value="Jam masuk" :required-data="true"/>
+                                        <TextInput id="start" type="time" class="mt-1 block w-full" v-model="form.start" min="00:00" max="23.59"/>
+                                        <InputError class="mt-2" :message="form.errors.start"/>
+                                    </div>
+
+                                    <div>
+                                        <InputLabel for="end" value="Jam keluar" :required-data="true"/>
+                                        <TextInput id="end" type="time" class="mt-1 block w-full" v-model="form.end" min="00:00" max="23.59"/>
+                                        <InputError class="mt-2" :message="form.errors.end"/>
+                                    </div>
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">

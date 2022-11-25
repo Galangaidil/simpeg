@@ -27,5 +27,7 @@ Route::prefix('/v1')->group(function(){
         Route::post('/logout', [ApiAuthController::class, 'logout'])->name('v1.auth.logout');
 
         Route::get('/getCurrentConf', [ConfigurationController::class, 'getCurrentConf'])->name('v1.conf.getCurrentConf');
+
+        Route::post('/attendances', [\App\Http\Controllers\ApiAttendanceController::class, 'store']);
     });
 });

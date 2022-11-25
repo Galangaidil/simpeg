@@ -80,7 +80,9 @@ class ConfigurationTest extends TestCase
                 'salary' => '4500000',
                 'workday' => '30',
                 'location' => '2',
-                'accepted_distance' => 50
+                'accepted_distance' => 50,
+                'start' => '07:00',
+                'end' => '22:00'
             ]);
 
         $response->assertOk()

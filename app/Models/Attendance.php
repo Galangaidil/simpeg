@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Configuration extends Model
+class Attendance extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'salary',
-        'workday',
-        'location',
-        'accepted_distance',
-        'start',
-        'end'
+        'latitude',
+        'longitude',
+        'distance'
     ];
 }

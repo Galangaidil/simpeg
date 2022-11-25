@@ -83,6 +83,12 @@ onMounted(() => {
                             <div class="text-gray-900 font-semibold">{{ props.configuration.accepted_distance }} meter
                             </div>
                         </div>
+                        <div class="mt-4">
+                            <div class="text-gray-500 text-sm">Jam kerja</div>
+                            <div class="text-gray-900 font-semibold">
+                                {{ props.configuration.start }} - {{ props.configuration.end }}
+                            </div>
+                        </div>
 
                         <PrimaryButton class="mt-4 flex items-center space-x-2" @click="edit(configuration.id)">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"

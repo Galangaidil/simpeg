@@ -96,15 +96,12 @@ class ConfigurationController extends Controller
             'salary' => 'required',
             'workday' => 'required|lte:31',
             'location' => 'required',
-            'accepted_distance' => 'required'
+            'accepted_distance' => 'required',
+            'start' => 'required',
+            'end' => 'required'
         ]);
 
-        $configuration->update([
-            'salary' => $request->salary,
-            'workday' => $request->workday,
-            'location' => $request->location,
-            'accepted_distance' => $request->accepted_distance
-        ]);
+        $configuration->update($request->all());
 
         DB::table('locations')->update(['status' => 'inactive']);
 
