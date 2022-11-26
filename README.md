@@ -83,7 +83,7 @@
 
 ```json
 {
-    "time" : "date",
+    "time" : "hour",
     "latitude" : "double",
     "longitude" : "double"
 }
@@ -93,14 +93,38 @@
 
 ```json
 {
+    "message" : "string"
+}
+```
+
+
+
+### Read
+
+- Method: `GET`
+- Endpoint: `api/v1/attendances`
+- Header:
+  - Authorization : Bearer token
+  - Accept: application/json
+
+- Response:
+
+```json
+{
     "message" : "string",
-    "data" : {
-        "id" : "int",
-        "user_id" : "int",
-        "time" : "date",
-        "status" : "string",
-        "created_at" : "date",
-        "updated_at" : "date"
+    "data": {
+        "attendances" : [
+            {
+                "id" : "int",
+                "user_id" : "int",
+                "latitude" : "string",
+                "longitude" : "string",
+                "distance" : "double",
+                "status" : "string",
+                "created_at" : "string",
+                "updated_at" : "string"
+            }
+        ]
     }
 }
 ```

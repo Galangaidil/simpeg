@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('latitude');
             $table->string('longitude');
             $table->float('distance');
+            $table->enum('status', ['hadir', 'izin', 'alpha'])->default('hadir');
             $table->timestamps();
         });
     }

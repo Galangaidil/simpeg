@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiAttendanceController;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ConfigurationController;
 use Illuminate\Http\Request;
@@ -28,6 +29,8 @@ Route::prefix('/v1')->group(function(){
 
         Route::get('/getCurrentConf', [ConfigurationController::class, 'getCurrentConf'])->name('v1.conf.getCurrentConf');
 
-        Route::post('/attendances', [\App\Http\Controllers\ApiAttendanceController::class, 'store']);
+        Route::apiResource('attendances', ApiAttendanceController::class)->only(['index', 'store']);
+
+        Route::get('/test', [ApiAttendanceController::class, 'has_the_user_taken_attendace_today']);
     });
 });

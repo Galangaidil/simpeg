@@ -12,6 +12,12 @@ class Attendance extends Model
     protected $fillable = [
         'latitude',
         'longitude',
-        'distance'
+        'distance',
+        'status'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
