@@ -39,14 +39,14 @@ const updateStatus = () => {
 </script>
 
 <template>
-    <Head title="Detail pengajuan cuti"/>
+    <Head title="Detail Cuti"/>
 
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center space-x-4">
                 <BackLink :href="route('offworks.index')" />
 
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail pengajuan cuti</h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Cuti</h2>
             </div>
         </template>
 
@@ -56,7 +56,7 @@ const updateStatus = () => {
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="w-full px-4 py-2">
                             <div class="flex justify-center lg:justify-between items-center border-b lg:border-none">
-                                <h2 class="text-2xl font-bold mb-4 lg:mb-0">Detail pengajuan cuti</h2>
+                                <h2 class="text-2xl font-bold mb-4 lg:mb-0">Detail Cuti</h2>
 
                                 <div class="hidden lg:flex items-center space-x-4">
                                     <select v-if="$page.props.permissions.manage" v-model="form.status" @change="updateStatus" class="text-gray-500 capitalize rounded border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200">

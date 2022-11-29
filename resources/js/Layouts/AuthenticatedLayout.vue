@@ -30,11 +30,21 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+
+                                <NavLink v-if="$page.props.permissions.manage" :href="route('users.index')" :active="route().current('users.*')">
+                                    Pegawai
+                                </NavLink>
+
+                                <NavLink :href="route('locations.index')" :active="route().current('locations.*')">
+                                    Lokasi
+                                </NavLink>
+
                                 <NavLink :href="route('offworks.index')" :active="route().current('offworks.*')">
                                     Cuti
                                 </NavLink>
-                                <NavLink :href="route('attendances.index')" :active="route().current('attendances.*')">
-                                    Kehadiran
+
+                                <NavLink v-if="$page.props.permissions.manage" :href="route('attendances.index')" :active="route().current('attendances.*')">
+                                    Presensi
                                 </NavLink>
                             </div>
                         </div>
@@ -60,18 +70,6 @@ const showingNavigationDropdown = ref(false);
                                             <span v-if="$page.props.permissions.manage">Pemilik</span>
                                             <span v-else>Pegawai</span>
                                         </div>
-                                        <DropdownLink :href="route('locations.index')" class="flex items-center space-x-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                <path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" />
-                                            </svg>
-                                            <span>Lokasi</span>
-                                        </DropdownLink>
-                                        <DropdownLink v-if="$page.props.permissions.manage" :href="route('users.index')" class="flex items-center space-x-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-                                            </svg>
-                                            <span>Kelola Pegawai</span>
-                                        </DropdownLink>
                                         <DropdownLink v-if="$page.props.permissions.manage" :href="route('configurations.index')" class="flex items-center space-x-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                                 <path fill-rule="evenodd" d="M8.34 1.804A1 1 0 019.32 1h1.36a1 1 0 01.98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 011.262.125l.962.962a1 1 0 01.125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 01.804.98v1.361a1 1 0 01-.804.98l-1.473.295a6.95 6.95 0 01-.587 1.416l.834 1.25a1 1 0 01-.125 1.262l-.962.962a1 1 0 01-1.262.125l-1.25-.834a6.953 6.953 0 01-1.416.587l-.294 1.473a1 1 0 01-.98.804H9.32a1 1 0 01-.98-.804l-.295-1.473a6.957 6.957 0 01-1.416-.587l-1.25.834a1 1 0 01-1.262-.125l-.962-.962a1 1 0 01-.125-1.262l.834-1.25a6.957 6.957 0 01-.587-1.416l-1.473-.294A1 1 0 011 10.68V9.32a1 1 0 01.804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 01.125-1.262l.962-.962A1 1 0 015.38 3.03l1.25.834a6.957 6.957 0 011.416-.587l.294-1.473zM13 10a3 3 0 11-6 0 3 3 0 016 0z" clip-rule="evenodd" />
@@ -107,6 +105,26 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink v-if="$page.props.permissions.manage" :href="route('users.index')" :active="route().current('users.*')">
+                            Pegawai
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('locations.index')" :active="route().current('locations.*')">
+                            Lokasi
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink v-if="$page.props.permissions.manage" :href="route('configurations.index')" :active="route().current('configurations.*')">
+                            Pengaturan
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('offworks.index')" :active="route().current('offworks.*')">
+                            Cuti
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink v-if="$page.props.permissions.manage" :href="route('attendances.index')" :active="route().current('attendances.*')">
+                            Presensi
                         </ResponsiveNavLink>
                     </div>
 

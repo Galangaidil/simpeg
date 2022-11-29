@@ -26,14 +26,14 @@ const data = reactive({photoContainer: null})
 </script>
 
 <template>
-    <Head title="Form Permohonan Pengajuan Cuti"/>
+    <Head title="Formulir Permohonan Pengajuan Cuti"/>
 
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center space-x-4">
                 <BackLink :href="route('offworks.index')" />
 
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Form Permohonan Pengajuan Cuti</h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Formulir Permohonan Pengajuan Cuti</h2>
             </div>
         </template>
 
@@ -42,8 +42,6 @@ const data = reactive({photoContainer: null})
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="w-full md:max-w-md md:mx-auto px-4 py-2">
-                            <h2 class="text-2xl font-bold mb-4">Form Permohonan Pengajuan Cuti</h2>
-
                             <div class="text-base text-gray-500 mb-2">
                                 <span class="text-red-500">*</span> <span>Wajib diisi</span>
                             </div>
@@ -70,9 +68,12 @@ const data = reactive({photoContainer: null})
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="document" value="Dokumen" :required-data="true"/>
+                                    <InputLabel for="document" value="Gambar" :required-data="true"/>
                                     <FileInput @preview-file="previewFile" accept="image/*"/>
                                     <InputError class="mt-2" :message="form.errors.document"/>
+                                    <p class="mt-2 text-sm text-gray-500">
+                                        Gambar yang diupload ke dalam sistem tidak dapat di ubah.
+                                    </p>
                                 </div>
 
                                 <div class="mt-4">

@@ -27,5 +27,11 @@ class LocationSeeder extends Seeder
             'latitude' => '-7.747424881612259',
             'longitude' => '110.3554123613803',
         ]);
+
+        Location::create([
+            'name' => 'Kosan',
+            'latitude' => '-7.7567961212944',
+            'longitude' => '110.35635869236',
+        ]);
     }
 }

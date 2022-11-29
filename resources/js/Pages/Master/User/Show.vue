@@ -73,7 +73,7 @@ const data = reactive({
                             </div>
                             <div class="mt-4">
                                 <div class="text-gray-500 text-sm">Email</div>
-                                <div class="text-gray-900 font-semibold">{{ props.user.email }}</div>
+                                <div class="text-gray-900 font-semibold select-all">{{ props.user.email }}</div>
                             </div>
                             <div class="mt-4">
                                 <div class="text-gray-500 text-sm">Nomor HP</div>

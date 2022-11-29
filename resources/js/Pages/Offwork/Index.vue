@@ -31,12 +31,12 @@ const filteredItems = computed(() => {
 </script>
 
 <template>
-    <Head title="Permohonan pengajuan cuti" />
+    <Head title="Cuti" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Permohonan pengajuan cuti
+                Cuti
             </h2>
         </template>
 
@@ -46,9 +46,9 @@ const filteredItems = computed(() => {
                     <div class="p-6 bg-white border-b border-gray-200">
 
                         <div class="flex justify-between items-center">
-                            <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" placeholder="Cari pengajuan cuti"/>
+                            <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" placeholder="Cari cuti"/>
 
-                            <PrimaryButton @click="create">
+                            <PrimaryButton @click="create" v-if="$page.props.auth.user.role_id == 2">
                                 Tambah
                             </PrimaryButton>
                         </div>
