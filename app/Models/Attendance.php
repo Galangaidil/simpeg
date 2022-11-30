@@ -10,6 +10,7 @@ class Attendance extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'latitude',
         'longitude',
         'distance',
