@@ -110,21 +110,16 @@
 - Response:
 
 ```json
-{
-    "message" : "string",
-    "data": {
-        "attendances" : [
-            {
-                "id" : "int",
-                "user_id" : "int",
-                "latitude" : "string",
-                "longitude" : "string",
-                "distance" : "double",
-                "status" : "string",
-                "created_at" : "string",
-                "updated_at" : "string"
-            }
-        ]
+[
+    {
+        "id" : "int",
+        "user_id" : "int",
+        "latitude" : "string",
+        "longitude" : "string",
+        "distance" : "double",
+        "status" : "string",
+        "created_at" : "string",
+        "updated_at" : "string"
     }
-}
+]
 ```

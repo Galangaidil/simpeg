@@ -15,9 +15,23 @@ class ApiAttendanceController extends Controller
 
     public function index()
     {
-        return $this->success([
-            'attendances' => auth()->user()->attendances()->latest()->get()
-        ], "ok");
+        $attendances = auth()->user()->attendances()->latest()->get();
+
+        $withDiffForHumans = $attendances->map(function($item){
+            return [
+                'id' => $item->id,
+                "user_id" => $item->user_id,
+                "latitude" => $item->latitude,
+                "longitude" => $item->longitude,
+                "distance" => $item->distance,
+                "status" => $item->status,
+                "created_at" => $item->created_at,
+                "updated_at" => $item->updated_at,
+                "diffForHuman" => Carbon::parse($item->created_at)->format('d-m-y H:m')
+            ];
+        });
+
+        return response()->json($withDiffForHumans);
     }
 
     public function store(Request $request)
