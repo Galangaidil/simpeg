@@ -5,50 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\OffWork;
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
+use Inertia\Response;
 
 class OffWorkController extends Controller
 {
-    public function index()
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response
     {
-        $user = auth()->user();
-
-        if ($user->role_id === Role::isOwner) {
-            $offWorks = OffWork::latest()->get();
-        } else {
-            $offWorks = $user->offworks()->latest()->get();
-        }
-
-        $limitReason = $offWorks->map(function($item) {
-            return [
-                'id' => $item->id,
-                'user_id' => $item->user_id,
-                'start_date' => $item->start_date,
-                'finish_date' => $item->finish_date,
-                'reason' => Str::limit($item->reason, 30, '...'),
-                'document' => $item->document,
-                'status' => $item->status,
-                'created_at' => $item->created_at,
-                'updated_at' => $item->updated_at,
-                'user_name' => $item->user->name
-            ];
-        });
+        $leaves = match ($request->user()->role_id) {
+            Role::isOwner => OffWork::with('user:id,name')->latest()->get(),
+            Role::isPegawai => OffWork::with('user:id,name')->where('user_id', $request->user()->id)->get(),
+            default => null,
+        };
 
         return Inertia::render('Offwork/Index', [
-            'offworks' => $limitReason
+            'offworks' => $leaves
         ]);
     }
 
-    public function create()
+    /**
+     * @return Response
+     */
+    public function create(): Response
     {
         return Inertia::render('Offwork/Create');
     }
 
-    public function store(Request $request)
+
+    /**
+     * @param Request $request
+     * @return Redirector|Application|RedirectResponse
+     */
+    public function store(Request $request): Redirector|Application|RedirectResponse
     {
         $validated = $request->validate([
             'start_date' => 'required|date',
@@ -66,9 +65,16 @@ class OffWorkController extends Controller
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil dibuat.');
     }
 
-    public function show(OffWork $offwork)
+    /**
+     * @param Request $request
+     * @param OffWork $offwork
+     * @return Response
+     */
+    public function show(Request $request, OffWork $offwork): Response
     {
-        $this->authorize('view', $offwork);
+        if ($request->user()->cannot('view', $offwork)){
+            abort(403);
+        }
 
         $offwork['document'] = Storage::url($offwork->document);
 
@@ -80,9 +86,11 @@ class OffWorkController extends Controller
         ]);
     }
 
-    public function edit(OffWork $offwork)
+    public function edit(Request $request, OffWork $offwork)
     {
-        $this->authorize('update', $offwork);
+        if ($request->user()->cannot('update', $offwork)){
+            abort(403);
+        }
 
         $offwork['document_url'] = Storage::url($offwork->document);
 
@@ -93,7 +101,9 @@ class OffWorkController extends Controller
 
     public function update(Request $request, OffWork $offwork)
     {
-        $this->authorize('update', $offwork);
+        if ($request->user()->cannot('update', $offwork)){
+            abort(403);
+        }
 
         $validated = $request->validate([
             'start_date' => 'required|date',
@@ -106,9 +116,11 @@ class OffWorkController extends Controller
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil diperbarui.');
     }
 
-    public function destroy(OffWork $offwork)
+    public function destroy(Request $request, OffWork $offwork)
     {
-        $this->authorize('delete', $offwork);
+        if ($request->user()->cannot('delete', $offwork)){
+            abort(403);
+        }
 
         Storage::delete($offwork->document);
 

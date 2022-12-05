@@ -24,10 +24,15 @@ const show = (id) => {
 const filteredItems = computed(() => {
     return props.offworks.filter(item => {
         return item.reason.toLowerCase().indexOf(data.search.toLowerCase()) > -1 ||
-        item.user_name.toLowerCase().indexOf(data.search.toLowerCase()) > -1 ||
+        item.user.name.toLowerCase().indexOf(data.search.toLowerCase()) > -1 ||
         item.status.toLowerCase().indexOf(data.search.toLowerCase()) > -1;
     })
 })
+
+function limit (string = '', limit = 0)
+{
+    return string.substring(0, limit);
+}
 </script>
 
 <template>
@@ -46,9 +51,9 @@ const filteredItems = computed(() => {
                     <div class="p-6 bg-white border-b border-gray-200">
 
                         <div class="flex justify-between items-center">
-                            <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" placeholder="Cari cuti"/>
+                            <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400" placeholder="Cari"/>
 
-                            <PrimaryButton @click="create" v-if="$page.props.auth.user.role_id == 2">
+                            <PrimaryButton @click="create" v-if="$page.props.auth.user.role_id === 2">
                                 Tambah
                             </PrimaryButton>
                         </div>
@@ -80,10 +85,10 @@ const filteredItems = computed(() => {
                                 <tbody>
                                 <tr class="bg-white border-b hover:bg-gray-100 cursor-pointer" v-for="offwork in filteredItems" :key="offwork.id" @click="show(offwork.id)">
                                     <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ offwork.user_name }}
+                                        {{ offwork.user.name }}
                                     </th>
                                     <td class="py-4 px-6">
-                                        {{ offwork.reason }}
+                                        {{ limit(offwork.reason, 30) }}
                                     </td>
                                     <td class="py-4 px-6">
                                         {{ offwork.start_date }}
@@ -94,10 +99,10 @@ const filteredItems = computed(() => {
                                     <td class="py-4 px-6">
                                         <div class="flex items-center capitalize">
                                             <div class="h-2.5 w-2.5 rounded-full mr-2" :class="{
-                                                'bg-gray-400  animate-pulse' : offwork.status == 'menunggu',
-                                                'bg-orange-500  animate-pulse' : offwork.status == 'diproses',
-                                                'bg-red-500': offwork.status == 'ditolak',
-                                                'bg-green-400': offwork.status == 'disetujui',
+                                                'bg-gray-400  animate-pulse' : offwork.status === 'menunggu',
+                                                'bg-orange-500  animate-pulse' : offwork.status === 'diproses',
+                                                'bg-red-500': offwork.status === 'ditolak',
+                                                'bg-green-400': offwork.status === 'disetujui',
                                             }"></div>
                                             {{ offwork.status }}
                                         </div>
@@ -114,8 +119,8 @@ const filteredItems = computed(() => {
                             </table>
                         </div>
 
-                        <div v-if="Object.keys(filteredItems).length == 0" class="text-center text-gray-500 mt-4 text-sm">
-                            Pengajuan cuti tidak ditemukan. <span class="text-blue-500 cursor-pointer" @click="create">Tambah pengajuan cuti</span>
+                        <div v-if="Object.keys(filteredItems).length === 0" class="text-center text-gray-500 mt-4 text-sm">
+                            Cuti tidak ditemukan.
                         </div>
 
                     </div>
