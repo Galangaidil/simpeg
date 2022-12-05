@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\OffWork;
 use App\Models\Role;
-use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
 use Inertia\Response;
@@ -24,11 +22,17 @@ class OffWorkController extends Controller
      */
     public function index(Request $request): Response
     {
-        $leaves = match ($request->user()->role_id) {
-            Role::isOwner => OffWork::with('user:id,name')->latest()->get(),
-            Role::isPegawai => OffWork::with('user:id,name')->where('user_id', $request->user()->id)->get(),
-            default => null,
-        };
+//        $leaves = match ($request->user()->role_id) {
+//            Role::isOwner => OffWork::with('user:id,name')->latest()->get(),
+//            Role::isPegawai => OffWork::with('user:id,name')->where('user_id', $request->user()->id)->get(),
+//            default => null,
+//        };
+
+        if ($request->user()->role_id == Role::isOwner){
+            $leaves = OffWork::with('user:id,name')->latest()->get();
+        } else {
+            $leaves = OffWork::with('user:id,name')->where('user_id', $request->user()->id)->get();
+        }
 
         return Inertia::render('Offwork/Index', [
             'offworks' => $leaves
