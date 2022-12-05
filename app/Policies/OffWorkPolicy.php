@@ -15,24 +15,24 @@ class OffWorkPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OffWork  $offWork
+     * @param  \App\Models\OffWork  $offwork
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, OffWork $offWork)
+    public function view(User $user, OffWork $offwork)
     {
-        return $user->id === $offWork->user_id || $user->role_id === Role::isOwner;
+        return $user->id === $offwork->user_id || $user->role_id === Role::isOwner;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OffWork  $offWork
+     * @param  \App\Models\OffWork  $offwork
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, OffWork $offWork)
+    public function update(User $user, OffWork $offwork)
     {
-        return $user->id === $offWork->user_id || $user->role_id === Role::isOwner;
+        return $user->id === $offwork->user_id || $user->role_id === Role::isOwner;
     }
 
     /**
@@ -42,9 +42,9 @@ class OffWorkPolicy
      * @param  \App\Models\OffWork  $offWork
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, OffWork $offWork)
+    public function delete(User $user, OffWork $offwork)
     {
-        return $user->id === $offWork->user_id || $user->role_id === Role::isOwner;
+        return $user->id === $offwork->user_id || $user->role_id === Role::isOwner;
     }
 
     /**
