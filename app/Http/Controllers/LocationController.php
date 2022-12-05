@@ -27,7 +27,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Location::class);
+        $this->authorize('manage', auth()->user());
 
         return Inertia::render('Master/Location/Create');
     }
@@ -40,7 +40,7 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Location::class);
+        $this->authorize('manage', auth()->user());
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -74,7 +74,7 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
-        $this->authorize('update', Location::class);
+        $this->authorize('manage', auth()->user());
 
         return Inertia::render('Master/Location/Edit', [
             'location' => $location
@@ -90,7 +90,7 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
-        $this->authorize('update', Location::class);
+        $this->authorize('manage', auth()->user());
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -111,7 +111,7 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
-        $this->authorize('delete', Location::class);
+        $this->authorize('manage', auth()->user());
 
         $location->delete();
 
