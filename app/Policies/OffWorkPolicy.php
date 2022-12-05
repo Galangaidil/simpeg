@@ -12,39 +12,13 @@ class OffWorkPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\OffWork  $offwork
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param OffWork $leave
+     * @return bool
      */
-    public function view(User $user, OffWork $offwork)
+    public function manage(User $user, OffWork $leave): bool
     {
-        return $user->id === $offwork->user_id || $user->role_id === Role::isOwner;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\OffWork  $offwork
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user, OffWork $offwork)
-    {
-        return $user->id === $offwork->user_id || $user->role_id === Role::isOwner;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\OffWork  $offWork
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function delete(User $user, OffWork $offwork)
-    {
-        return $user->id === $offwork->user_id || $user->role_id === Role::isOwner;
+        return $user->role_id == Role::isOwner || $leave->user_id == $user->id;
     }
 
     /**
@@ -52,7 +26,7 @@ class OffWorkPolicy
      * @return bool
      */
 
-    public function updateStatus(User $user)
+    public function updateStatus(User $user): bool
     {
         return $user->role_id === Role::isOwner;
     }

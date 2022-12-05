@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\OffWork;
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -66,15 +67,13 @@ class OffWorkController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param OffWork $offwork
      * @return Response
+     * @throws AuthorizationException
      */
-    public function show(Request $request, OffWork $offwork): Response
+    public function show(OffWork $offwork): Response
     {
-        if ($request->user()->cannot('view', $offwork)){
-            abort(403);
-        }
+        $this->authorize('manage', $offwork);
 
         $offwork['document'] = Storage::url($offwork->document);
 
@@ -86,11 +85,14 @@ class OffWorkController extends Controller
         ]);
     }
 
-    public function edit(Request $request, OffWork $offwork)
+    /**
+     * @param OffWork $offwork
+     * @return Response
+     * @throws AuthorizationException
+     */
+    public function edit(OffWork $offwork): Response
     {
-        if ($request->user()->cannot('update', $offwork)){
-            abort(403);
-        }
+        $this->authorize('manage', $offwork);
 
         $offwork['document_url'] = Storage::url($offwork->document);
 
@@ -99,11 +101,15 @@ class OffWorkController extends Controller
         ]);
     }
 
-    public function update(Request $request, OffWork $offwork)
+    /**
+     * @param Request $request
+     * @param OffWork $offwork
+     * @return Application|RedirectResponse|Redirector
+     * @throws AuthorizationException
+     */
+    public function update(Request $request, OffWork $offwork): Redirector|RedirectResponse|Application
     {
-        if ($request->user()->cannot('update', $offwork)){
-            abort(403);
-        }
+        $this->authorize('manage', $offwork);
 
         $validated = $request->validate([
             'start_date' => 'required|date',
@@ -116,11 +122,14 @@ class OffWorkController extends Controller
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil diperbarui.');
     }
 
-    public function destroy(Request $request, OffWork $offwork)
+    /**
+     * @param OffWork $offwork
+     * @return Application|RedirectResponse|Redirector
+     * @throws AuthorizationException
+     */
+    public function destroy(OffWork $offwork): Redirector|RedirectResponse|Application
     {
-        if ($request->user()->cannot('delete', $offwork)){
-            abort(403);
-        }
+        $this->authorize('manage', $offwork);
 
         Storage::delete($offwork->document);
 
@@ -129,7 +138,13 @@ class OffWorkController extends Controller
         return redirect(route('offworks.index'))->with('message', 'Permohonan cuti berhasil dihapus.');
     }
 
-    public function updateStatus(Request $request, OffWork $offwork)
+    /**
+     * @param Request $request
+     * @param OffWork $offwork
+     * @return Application|RedirectResponse|Redirector
+     * @throws AuthorizationException
+     */
+    public function updateStatus(Request $request, OffWork $offwork): Redirector|RedirectResponse|Application
     {
         $this->authorize('updateStatus', $offwork);
 
