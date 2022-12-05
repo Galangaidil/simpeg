@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('Master/Location/Index', [
             'locations' => Location::latest()->get(),
@@ -23,9 +26,10 @@ class LocationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
+     * @throws AuthorizationException
      */
-    public function create()
+    public function create(): Response
     {
         $this->authorize('manage', auth()->user());
 
@@ -35,10 +39,11 @@ class LocationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->authorize('manage', auth()->user());
 
@@ -56,10 +61,10 @@ class LocationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
+     * @param Location $location
+     * @return Response
      */
-    public function show(Location $location)
+    public function show(Location $location): Response
     {
         return Inertia::render('Master/Location/Show', [
             'location' => $location
@@ -69,10 +74,11 @@ class LocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
+     * @param Location $location
+     * @return Response
+     * @throws AuthorizationException
      */
-    public function edit(Location $location)
+    public function edit(Location $location): Response
     {
         $this->authorize('manage', auth()->user());
 
@@ -84,11 +90,12 @@ class LocationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Location $location
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(Request $request, Location $location)
+    public function update(Request $request, Location $location): RedirectResponse
     {
         $this->authorize('manage', auth()->user());
 
@@ -106,10 +113,11 @@ class LocationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
+     * @param Location $location
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(Location $location)
+    public function destroy(Location $location): RedirectResponse
     {
         $this->authorize('manage', auth()->user());
 
