@@ -7,6 +7,8 @@ use App\Models\Configuration;
 use App\Models\Location;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,9 +21,12 @@ class AttendanceController extends Controller
      *
      * @param Request $request
      * @return Response
+     * @throws AuthorizationException
      */
     public function index(Request $request): Response
     {
+        $this->authorize('manage', $request->user());
+
         $attendances = match ($request->input('filter')) {
             "today" => Attendance::with('user:id,name')->whereDate('created_at', Carbon::today())->latest()->get(),
             "yesterday" => Attendance::with('user:id,name')->whereDate('created_at', Carbon::yesterday())->latest()->get(),
@@ -44,9 +49,12 @@ class AttendanceController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function create(): Response
     {
+        $this->authorize('manage', auth()->user());
+
         // Get all user id and name
         $users = User::select('id', 'name')->get();
 
@@ -66,12 +74,14 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws ValidationException
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ValidationException|AuthorizationException
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
+        $this->authorize('manage', $request->user());
+
         $has_the_user_taken_attendace_today = Attendance::where('user_id', $request->input('user_id'))
             ->whereDate('created_at', Carbon::today())->get()->count();
 
@@ -97,11 +107,14 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param Attendance $attendance
      * @return Response
+     * @throws AuthorizationException
      */
     public function show(Attendance $attendance): Response
     {
+        $this->authorize('manage', auth()->user());
+
         return Inertia::render('Attendance/Show', [
             'attendance' => $attendance,
             'username' => $attendance->user->name,
@@ -113,8 +126,8 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
+     * @param Attendance $attendance
+     * @return void
      */
     public function edit(Attendance $attendance)
     {
@@ -124,12 +137,15 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Attendance $attendance
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(Request $request, Attendance $attendance)
+    public function update(Request $request, Attendance $attendance): RedirectResponse
     {
+        $this->authorize('manage', $request->user());
+
         $attendance->update($request->all());
 
         return to_route('attendances.show', $attendance)->with('message', 'Presensi berhasil diperbarui.');
@@ -138,11 +154,14 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Attendance $attendance
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(Attendance $attendance)
+    public function destroy(Attendance $attendance): RedirectResponse
     {
+        $this->authorize('manage', auth()->user());
+
         $attendance->delete();
 
         return to_route('attendances.index')->with('message', 'Presensi berhasil dihapus.');

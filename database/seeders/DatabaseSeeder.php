@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             LocationSeeder::class,
             ConfigurationSeeder::class,
-            OffWorkSeeder::class,
+//            OffWorkSeeder::class,
         ]);
 
         // Create user with "owner" privileges
