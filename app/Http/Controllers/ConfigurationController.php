@@ -25,7 +25,7 @@ class ConfigurationController extends Controller
 
         $configuration = Configuration::find(1);
 
-        $location = Location::findOrFail($configuration->location);
+        $location = Location::find($configuration->location);
 
         return Inertia::render('Master/Configuration/Index', [
             'configuration' => $configuration,
