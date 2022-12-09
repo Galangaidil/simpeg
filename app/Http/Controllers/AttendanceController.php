@@ -118,7 +118,7 @@ class AttendanceController extends Controller
         return Inertia::render('Attendance/Show', [
             'attendance' => $attendance,
             'username' => $attendance->user->name,
-            'location' => Location::find((int)Configuration::find(1)->location),
+            'location' => Location::findOrFail((int)Configuration::find(1)->location),
             'status' => ['hadir', 'izin', 'alpha']
         ]);
     }

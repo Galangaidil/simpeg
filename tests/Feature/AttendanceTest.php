@@ -118,35 +118,56 @@ class AttendanceTest extends TestCase
     }
 
     /**
+     * Test show attendance
+     *
+     * @return void
+     */
+    public function test_show_attendance(): void
+    {
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
+        Location::factory()->create();
+        Configuration::factory()->create();
+        $attendance = Attendance::factory()->forUser(['name' => 'Ijum'])->create();
+
+        $this->actingAs($owner);
+
+        $this->followingRedirects()
+            ->get(route('attendances.show', $attendance->id))
+            ->assertOk()
+            ->assertInertia(fn(AssertableInertia $page) =>$page
+                ->where('errors', [])
+                ->component('Attendance/Show')
+            );
+    }
+
+    /**
      * Test update status attendance
      *
      * @return void
      */
     public function test_update_status_attendance(): void
     {
-        $this->assertTrue(true);
+        $owner = User::factory()->create(['role_id' => Role::isOwner]);
+        $location = Location::factory()->create();
+        Configuration::factory()->create(['location' => $location->id]);
+        $attendance = Attendance::factory()->forUser(['name' => 'Ijum'])->create();
 
-//        $owner = User::factory()->create(['role_id' => Role::isOwner]);
-//        Location::factory()->create();
-//        Configuration::factory()->create();
-//        $attendance = Attendance::factory()->forUser(['name' => 'Ijum'])->create();
-//
-//        $this->actingAs($owner);
-//
-//        $this->followingRedirects()
-//            ->put(route('attendances.update', $attendance->id), [
-//                'status' => 'alpha'
-//            ])
-//            ->assertOk()
-//            ->assertInertia(fn(AssertableInertia $page) => $page
-//                ->where('errors', [])
-//                ->component('Attendance/Show')
-//                ->where('flash.message', 'Presensi berhasil diperbarui.')
-//            );
-//
-//        $this->assertDatabaseHas('attendances', [
-//            'status' => 'alpha'
-//        ]);
+        $this->actingAs($owner);
+
+        $this->followingRedirects()
+            ->put(route('attendances.update', $attendance->id), [
+                'status' => 'alpha'
+            ])
+            ->assertOk()
+            ->assertInertia(fn(AssertableInertia $page) => $page
+                ->where('errors', [])
+                ->component('Attendance/Show')
+                ->where('flash.message', 'Presensi berhasil diperbarui.')
+            );
+
+        $this->assertDatabaseHas('attendances', [
+            'status' => 'alpha'
+        ]);
     }
 
     /**
