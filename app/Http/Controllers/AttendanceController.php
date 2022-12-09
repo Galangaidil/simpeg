@@ -22,14 +22,21 @@ class AttendanceController extends Controller
      */
     public function index(Request $request): Response
     {
-        $attendances = Attendance::with('user:id,name')->whereDate('created_at', Carbon::today())->latest()->get();
+        $attendances = match ($request->input('filter')) {
+            "today" => Attendance::with('user:id,name')->whereDate('created_at', Carbon::today())->latest()->get(),
+            "yesterday" => Attendance::with('user:id,name')->whereDate('created_at', Carbon::yesterday())->latest()->get(),
+            "this_week" => Attendance::with('user:id,name')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->latest()->get(),
+            "this_month" => Attendance::with('user:id,name')->whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->latest()->get(),
+            default => [],
+        };
 
-        if ($request->has('date')){
-            $attendances = Attendance::with('user:id,name')->whereDate('created_at', $request->date)->latest()->get();
+        if ($request->has('start') && $request->has('end')){
+            $attendances = Attendance::with('user:id,name')->whereBetween('created_at', [$request->input('start'), $request->input('end')])->get();
         }
 
         return Inertia::render('Attendance/Index', [
-            'attendances' => $attendances
+            'attendances' => $attendances,
+            'filtered' => $request->input('filter')
         ]);
     }
 

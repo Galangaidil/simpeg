@@ -7,8 +7,9 @@ import {reactive, computed} from 'vue';
 import TextInput from '@/Components/TextInput.vue';
 import SuccessToast from '@/Components/SuccessToast.vue';
 import dayjs from "dayjs";
+import InputLabel from '@/Components/InputLabel.vue';
 
-const props = defineProps(['attendances']);
+const props = defineProps(['attendances', 'filtered']);
 
 const create = () => {
     return Inertia.get(route('attendances.create'));
@@ -17,7 +18,10 @@ const create = () => {
 const data = reactive({
     search: '',
     title: 'Presensi',
-    date: dayjs()
+    start_date: null,
+    end_date: null,
+    filter: '',
+    showModal: false
 })
 
 const show = (id) => {
@@ -36,13 +40,29 @@ const filteredItems = computed(() => {
 })
 
 const searchByDate = () => {
-    return Inertia.get('?date=' + data.date);
+    if (data.start_date != null && data.end_date != null) {
+        const query = `?start=${data.start_date}&end=${data.end_date}`
+        return Inertia.get(route('attendances.index') + query);
+    }
+}
+
+function filterBy() {
+    if (data.filter === 'let_me_choose') {
+        return toggleModal();
+    }
+    return Inertia.get('?filter=' + data.filter);
+}
+
+function toggleModal() {
+    return data.showModal = !data.showModal;
 }
 
 </script>
 
 <template>
-    <Head :title="data.title"/>
+    <Head>
+        <title>{{ data.title }}</title>
+    </Head>
 
     <AuthenticatedLayout>
         <template #header>
@@ -61,12 +81,24 @@ const searchByDate = () => {
                                 <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400"
                                            :placeholder="'Cari ' + data.title"/>
 
-                                <TextInput type="date" v-model="data.date" @change="searchByDate"/>
+                                <select v-model="data.filter" @change="filterBy(this.value)"
+                                        class="text-gray-500 rounded border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200">
+                                    <option disabled value="">Pilih tanggal</option>
+                                    <option value="today">Hari ini</option>
+                                    <option value="yesterday">Kemarin</option>
+                                    <option value="this_week">Minggu ini</option>
+                                    <option value="this_month">Bulan ini</option>
+                                    <option value="let_me_choose">Pilih tanggal sendiri</option>
+                                </select>
                             </div>
 
                             <PrimaryButton @click="create">
                                 Tambah
                             </PrimaryButton>
+                        </div>
+
+                        <div class="mt-2 text-sm text-gray-600" v-if="filtered ? filtered : null">
+                            Menampilkan data berdasarkan {{ filtered }}.
                         </div>
 
                         <div class="overflow-x-auto relative mt-6">
@@ -140,7 +172,7 @@ const searchByDate = () => {
                             </table>
                         </div>
 
-                        <div v-if="Object.keys(filteredItems).length == 0"
+                        <div v-if="Object.keys(filteredItems).length === 0"
                              class="text-center text-gray-500 mt-4 text-sm">
                             {{ data.title }} tidak ditemukan.
                         </div>
@@ -151,6 +183,63 @@ const searchByDate = () => {
         </div>
 
         <SuccessToast v-if="$page.props.flash.message" :message="$page.props.flash.message"/>
+
+        <div v-if="data.showModal"
+             class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+            <div class="relative w-auto my-6 mx-auto max-w-3xl">
+                <!--content-->
+                <div
+                    class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                    <!--header-->
+                    <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                        <h3 class="text-3xl font-semibold">
+                            Pilih Tanggal
+                        </h3>
+                        <button
+                            class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                            v-on:click="toggleModal()">
+              <span class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                ×
+              </span>
+                        </button>
+                    </div>
+                    <!--body-->
+                    <div class="relative p-6 flex-auto">
+                        <p class="my-4 text-slate-500 text-lg leading-relaxed">
+                            Fitur
+                            <mark class="capitalize">pilih tanggal</mark>
+                            berfungsi untuk menampilkan data berdasarkan rentang waktu yang anda inginkan.
+                        </p>
+                        <div>
+                            <InputLabel for="start_date" value="Tanggal Awal"/>
+                            <TextInput type="date" id="start_date" class="mt-1 block w-full" v-model="data.start_date"
+                                       required/>
+                        </div>
+
+                        <div class="mt-4">
+                            <InputLabel for="end_date" value="Tanggal Akhir"/>
+                            <TextInput type="date" id="end_date" class="mt-1 block w-full" v-model="data.end_date"
+                                       required/>
+                        </div>
+                    </div>
+                    <!--footer-->
+                    <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <button
+                            class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs tracking-widest px-4 py-2 rounded outline-none focus:outline-none mr-3 mb-1 ease-linear transition-all duration-150"
+                            type="button" v-on:click="toggleModal()">
+                            Tutup
+                        </button>
+                        <PrimaryButton class="mb-1"
+                                       @click="searchByDate"
+                                       :class="{ 'opacity-25' : data.start_date === null, 'opacity-50' : data.end_date === null }"
+                                       :disabled="data.end_date === null">
+                            Pilih
+                        </PrimaryButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="data.showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
 
     </AuthenticatedLayout>
 </template>
