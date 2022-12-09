@@ -81,7 +81,7 @@ function toggleModal() {
                                 <TextInput type="text" v-model="data.search" class="placeholder:text-gray-400"
                                            :placeholder="'Cari ' + data.title"/>
 
-                                <select v-model="data.filter" @change="filterBy(this.value)"
+                                <select v-model="data.filter" @change="filterBy"
                                         class="text-gray-500 rounded border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200">
                                     <option disabled value="">Pilih tanggal</option>
                                     <option value="today">Hari ini</option>
