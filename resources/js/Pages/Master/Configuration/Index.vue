@@ -8,11 +8,6 @@ import { onMounted } from 'vue';
 
 const props = defineProps(['configuration', 'location']);
 
-const formatSalary = Intl.NumberFormat('id-ID', {
-    'style': "currency",
-    'currency': 'IDR'
-})
-
 const edit = (id) => {
     return Inertia.get(route('configurations.edit', id));
 }
@@ -65,15 +60,6 @@ onMounted(() => {
                             </p>
                         </div>
 
-                        <div class="mt-4">
-                            <div class="text-gray-500 text-sm">Gaji per bulan</div>
-                            <div class="text-gray-900 font-semibold">{{ formatSalary.format(props.configuration.salary)
-                                }}</div>
-                        </div>
-                        <div class="mt-4">
-                            <div class="text-gray-500 text-sm">Jumlah hari kerja</div>
-                            <div class="text-gray-900 font-semibold">{{ props.configuration.workday }} hari</div>
-                        </div>
                         <div class="mt-4">
                             <div class="text-gray-500 text-sm">Lokasi presensi</div>
                             <div class="text-gray-900 font-semibold">{{ props.location.name }}</div>

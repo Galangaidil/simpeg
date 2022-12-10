@@ -10,8 +10,6 @@ import BackLink from '@/Components/BackLink.vue';
 const props = defineProps(['configuration', 'locations'])
 
 const form = useForm({
-    salary: props.configuration.salary,
-    workday: props.configuration.workday,
     location: props.configuration.location,
     accepted_distance: props.configuration.accepted_distance,
     start: props.configuration.start,
@@ -43,19 +41,6 @@ const form = useForm({
                             </div>
 
                             <form @submit.prevent="form.put(route('configurations.update', configuration.id))">
-
-                                <div>
-                                    <InputLabel for="salary" value="Gaji per bulan" :required-data="true"/>
-                                    <TextInput id="salary" type="number" class="mt-1 block w-full" v-model="form.salary" />
-                                    <InputError class="mt-2" :message="form.errors.salary"/>
-                                </div>
-
-                                <div class="mt-4">
-                                    <InputLabel for="workday" value="Jumlah hari kerja" :required-data="true"/>
-                                    <TextInput id="workday" type="number" class="mt-1 block w-full" v-model="form.workday" />
-                                    <InputError class="mt-2" :message="form.errors.workday"/>
-                                </div>
-
                                 <div class="mt-4">
                                     <InputLabel for="location" value="Lokasi presensi" :required-data="true"/>
                                     <select v-model="form.location" id="location" class="mt-1 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">

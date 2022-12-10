@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
-            $table->integer('salary');
-            $table->integer('workday');
             $table->integer('location');
             $table->integer('accepted_distance');
             $table->string('start');

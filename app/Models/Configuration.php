@@ -10,8 +10,6 @@ class Configuration extends Model
     use HasFactory;
 
     protected $fillable = [
-        'salary',
-        'workday',
         'location',
         'accepted_distance',
         'start',

@@ -6,7 +6,10 @@ use App\Models\Configuration;
 use App\Models\Location;
 use App\Models\User;
 use App\Traits\HttpResponses;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -17,9 +20,10 @@ class ConfigurationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
+     * @throws AuthorizationException
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('manage', auth()->user());
 
@@ -36,7 +40,7 @@ class ConfigurationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -46,8 +50,8 @@ class ConfigurationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -57,8 +61,8 @@ class ConfigurationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Configuration  $configuration
-     * @return \Illuminate\Http\Response
+     * @param Configuration $configuration
+     * @return Response
      */
     public function show(Configuration $configuration)
     {
@@ -68,10 +72,11 @@ class ConfigurationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Configuration  $configuration
-     * @return \Illuminate\Http\Response
+     * @param Configuration $configuration
+     * @return \Inertia\Response
+     * @throws AuthorizationException
      */
-    public function edit(Configuration $configuration)
+    public function edit(Configuration $configuration): \Inertia\Response
     {
         $this->authorize('manage', User::class);
 
@@ -84,17 +89,16 @@ class ConfigurationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Configuration  $configuration
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Configuration $configuration
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(Request $request, Configuration $configuration)
+    public function update(Request $request, Configuration $configuration): RedirectResponse
     {
         $this->authorize('manage', User::class);
 
         $request->validate([
-            'salary' => 'required',
-            'workday' => 'required|lte:31',
             'location' => 'required',
             'accepted_distance' => 'required',
             'start' => 'required',
@@ -115,8 +119,8 @@ class ConfigurationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Configuration  $configuration
-     * @return \Illuminate\Http\Response
+     * @param Configuration $configuration
+     * @return Response
      */
     public function destroy(Configuration $configuration)
     {

@@ -17,10 +17,8 @@ class ConfigurationFactory extends Factory
     public function definition()
     {
         return [
-            'salary' => 4000000,
-            'workday' => 24,
             'location' => 1,
-            'accepted_distance' => 100,
+            'accepted_distance' => 500,
             'start' => '07:00',
             'end' => '18:00'
         ];

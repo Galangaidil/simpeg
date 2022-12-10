@@ -6,6 +6,9 @@ use App\Models\Configuration;
 use App\Models\Location;
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\ConfigurationSeeder;
+use Database\Seeders\LocationSeeder;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;
@@ -17,17 +20,21 @@ class ConfigurationTest extends TestCase
 
     public function test_configurations_screen_can_be_rendered()
     {
+        $this->seed([
+            LocationSeeder::class,
+            ConfigurationSeeder::class
+        ]);
+
         $owner = User::factory()->create(['role_id' => Role::isOwner]);
 
         $this->actingAs($owner);
-
-        Configuration::factory()->create();
 
         $this->followingRedirects()
             ->get(route('configurations.index'))
             ->assertOk()
             ->assertInertia(fn(AssertableInertia $page) => $page
                 ->component('Master/Configuration/Index')
+                ->where('errors', [])
             );
     }
 
@@ -58,29 +65,28 @@ class ConfigurationTest extends TestCase
         $this->followingRedirects()
             ->put(route('configurations.update', $conf->id))
             ->assertInertia(fn(AssertableInertia $page) => $page
-                ->where('errors.salary', 'The salary field is required.')
-                ->where('errors.workday', 'The workday field is required.')
                 ->where('errors.location', 'The location field is required.')
                 ->where('errors.accepted_distance', 'The accepted distance field is required.')
             );
     }
 
-    public function test_update_the_conf()
+    public function test_update_configuration()
     {
-        $this->seed();
+        $this->seed([
+            LocationSeeder::class,
+            ConfigurationSeeder::class
+        ]);
 
         $owner = User::factory()->create(['role_id' => Role::isOwner]);
 
-        $conf = Configuration::factory()->create();
+        $newLocation = Location::factory()->create();
 
         $this->actingAs($owner);
 
         $response = $this->followingRedirects()
-            ->put(route('configurations.update', $conf->id), [
-                'salary' => '4500000',
-                'workday' => '30',
-                'location' => '2',
-                'accepted_distance' => 50,
+            ->put(route('configurations.update', 1), [
+                'location' => $newLocation->id,
+                'accepted_distance' => 500,
                 'start' => '07:00',
                 'end' => '22:00'
             ]);
@@ -93,15 +99,14 @@ class ConfigurationTest extends TestCase
             );
 
         $this->assertDatabaseHas('configurations', [
-            'salary' => '4500000',
-            'workday' => '30',
-            'location' => '2',
-            'accepted_distance' => 50
+            'location' => $newLocation->id,
+            'accepted_distance' => 500,
+            'start' => '07:00',
+            'end' => '22:00'
         ]);
     }
 
-
-    public function test_pegawai_can_not_access_the_conf()
+    public function test_pegawai_can_not_open_the_configuration_page()
     {
         $pegawai = User::factory()->create();
 
