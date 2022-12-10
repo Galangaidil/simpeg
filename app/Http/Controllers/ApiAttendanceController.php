@@ -27,7 +27,7 @@ class ApiAttendanceController extends Controller
                 "status" => $item->status,
                 "created_at" => $item->created_at,
                 "updated_at" => $item->updated_at,
-                "diffForHuman" => Carbon::parse($item->created_at)->format('d-m-y H:m')
+                "diffForHuman" => Carbon::parse($item->created_at)->toDateTimeString()
             ];
         });
 
