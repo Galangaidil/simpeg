@@ -29,7 +29,7 @@ Route::prefix('/v1')->group(function(){
 
         Route::get('/getCurrentConf', [ConfigurationController::class, 'getCurrentConf'])->name('v1.conf.getCurrentConf');
 
-        Route::apiResource('attendances', ApiAttendanceController::class)->only(['index', 'store']);
+        Route::apiResource('attendances', ApiAttendanceController::class, ['names' => 'v1.attendances'])->only(['index', 'store']);
 
         Route::get('/test', [ApiAttendanceController::class, 'has_the_user_taken_attendace_today']);
     });
