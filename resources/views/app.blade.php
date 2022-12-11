@@ -4,7 +4,26 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+{{--        <title inertia>{{ config('app.name', 'Laravel') }}</title>--}}
+
+        <!-- Primary Meta Tags -->
+        <title inertia>Simpeg</title>
+        <meta name="title" content="Simpeg">
+        <meta name="description" content=" Sistem Informasi Kepegawaian Tauke Sawit Dhea Putri Mustafa.">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ config('app.url') }}">
+        <meta property="og:title" content="Simpeg">
+        <meta property="og:description" content=" Sistem Informasi Kepegawaian Tauke Sawit Dhea Putri Mustafa.">
+        <meta property="og:image" content="/meta-og-image.png">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="{{ config('app.url') }}">
+        <meta property="twitter:title" content="Simpeg">
+        <meta property="twitter:description" content=" Sistem Informasi Kepegawaian Tauke Sawit Dhea Putri Mustafa.">
+        <meta property="twitter:image" content="/meta-og-image.png">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
