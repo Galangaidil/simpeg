@@ -49,7 +49,7 @@ class ApiAttendanceController extends Controller
 
             if ($distance['m'] > (int)$conf['accepted_distance']) {
                 return $this->errors("Presensi gagal.", [
-                    "distance" => "Jarak anda dari lokasi presensi: " . round($distance['m'], 2) . " meter."
+                    "hint" => "Jarak anda dari lokasi presensi: " . round($distance['m'], 2) . " meter."
                 ]);
             } else {
                 $validated = $request->validate([
