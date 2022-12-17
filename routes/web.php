@@ -16,7 +16,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', fn() => Inertia::render('LandingPage/Index'));
+
+Route::get('/info', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
