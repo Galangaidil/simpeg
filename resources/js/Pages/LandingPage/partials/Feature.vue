@@ -17,7 +17,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                 <h3 class="text-3xl font-bold dark:text-white mb-8">Presensi</h3>
 
                 <p class="mb-8 text-gray-500 dark:text-gray-400 text-lg font-normal lg:text-xl">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, nobis porro deleniti aspernatur ab nemo debitis, eligendi deserunt quo accusamus quidem iure molestias quae, veniam cupiditate. Adipisci delectus non amet!
+                    Lakukan presensi dengan cepat dan mudah menggunakan aplikasi mobile Simpeg.
                 </p>
 
                 <div class="border-t border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
@@ -29,7 +29,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            Laporan yang dinamis
+                            Sekali tekan, Done! Presensi berhasil disimpan
                         </li>
 
                         <li class="flex items-center font-semibold">
@@ -39,7 +39,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            Terdapat preview maps
+                            Detail, semuanya dicatat
                         </li>
 
                         <li class="flex items-center font-semibold">
@@ -65,7 +65,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                 <h3 class="text-3xl font-bold dark:text-white mb-8">Cuti</h3>
 
                 <p class="mb-8 text-gray-500 dark:text-gray-400 text-lg font-normal lg:text-xl">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, nobis porro deleniti aspernatur ab nemo debitis, eligendi deserunt quo accusamus quidem iure molestias quae, veniam cupiditate. Adipisci delectus non amet!
+                    Ajukan permohonan cuti menggunakan aplikasi web.
                 </p>
 
                 <div class="border-t border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
@@ -77,7 +77,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"></path>
                             </svg>
-                            Laporan yang dinamis
+                            Detail pegawai yang mengajukan cuti
                         </li>
 
                         <li class="flex items-center font-semibold">
@@ -87,7 +87,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"></path>
                             </svg>
-                            Terdapat preview maps
+                            Tanggal mulai dan dan selesai cuti
                         </li>
 
                         <li class="flex items-center font-semibold">
@@ -97,7 +97,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"></path>
                             </svg>
-                            Kelola status kehadiran
+                            Kelola status cuti
                         </li>
                     </ul>
                 </div>

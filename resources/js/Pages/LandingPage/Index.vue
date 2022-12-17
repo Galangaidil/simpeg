@@ -2,6 +2,8 @@
 import Header from './partials/Header.vue';
 import Hero from './partials/Hero.vue';
 import Feature from './partials/Feature.vue';
+import HowItWork from './partials/HowItWork.vue';
+import Test from './partials/Test.vue';
 import Offer from './partials/Offer.vue';
 import Testimonial from './partials/Testimonial.vue';
 import Footer from './partials/Footer.vue';
@@ -18,6 +20,8 @@ import {Head} from "@inertiajs/inertia-vue3";
         <Header/>
         <Hero/>
         <Feature/>
+        <HowItWork />
+        <Test />
         <Offer/>
         <Testimonial/>
         <Faq />

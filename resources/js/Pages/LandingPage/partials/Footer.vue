@@ -1,6 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import dayjs from "dayjs";
+import {Link} from "@inertiajs/inertia-vue3";
 
 const data = ref({
     year: dayjs().year()
@@ -11,7 +12,7 @@ const data = ref({
 <template>
     <footer class="bg-white shadow sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 dark:bg-gray-800">
         <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-            &copy; 2021-{{ data.year }} By Galang Aidil Akbar
+            &copy; 2021-{{ data.year }} <Link href="/" class="font-semibold underline">Simpeg</Link> By Galang Aidil Akbar
         </p>
         <div class="flex justify-center items-center space-x-1">
             <a href="https://twitter.com/galangaidilakbr" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
