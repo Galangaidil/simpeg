@@ -21,38 +21,19 @@ const form = useForm({
     longitude: null
 })
 
-const getCurrentLocation = () => {
-    if (navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(showPosition);
-        loading.OnLoading = true;
-    } else {
-        alert('gak support browsernya bro');
-        loading.OnLoading = false;
-    }
-}
-
-const showPosition = (position) => {
-  form.latitude = position.coords.latitude;
-  form.longitude = position.coords.longitude;
-
-  loading.OnLoading = false;
-  loading.showToast = true;
-}
-
 onMounted(() => {
-    const map = L.map('map').setView([-0.3977748, 101.6475163], 13);
+
+    // Set map of indonesia
+    const map = L.map('map').setView([-5.44102230371796, 118.81480144101882], 4);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const marker = L.marker([-0.3977748, 101.6475163]).addTo(map);
-
-    marker.bindPopup('<b>Tauke Sawit Dhea Putri Mustafa</b>');
-
     const popup = L.popup();
 
+    // Set coords on click
     function onMapClick(e){
         form.latitude = e.latlng.lat;
         form.longitude = e.latlng.lng;
@@ -69,6 +50,37 @@ onMounted(() => {
     }
 
     map.on('click', onMapClick);
+
+    document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
+    function geoFindMe()
+    {
+        function success(position)
+        {
+            form.latitude = position.coords.latitude;
+            form.longitude = position.coords.longitude;
+
+            loading.OnLoading = false;
+            loading.showToast = true;
+            loading.showAlert = false
+
+            map.flyTo([position.coords.latitude, position.coords.longitude], 19);
+            L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        }
+
+        function error()
+        {
+            alert('Mohon maaf, kami tidak dapat menemukan koordinat Anda.');
+        }
+
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(success, error);
+            loading.OnLoading = true;
+        } else {
+            alert('Mohon maaf, sepertinya browser Anda tidak support fitur Geolocation.');
+            loading.OnLoading = false;
+        }
+    }
 })
 </script>
 
@@ -94,7 +106,7 @@ onMounted(() => {
 
                                 <div v-if="loading.showAlert" class="flex p-4 my-2 bg-green-100 rounded-lg" role="alert">
                                     <div class="ml-3 text-sm font-medium text-green-700">
-                                        Anda dapat menekan tombol <strong class="uppercase tracking-widest">Temukan koordinat</strong> untuk mengisi latitude dan longitude secara otomatis. Anda juga dapat mengisinya dengan cara mengetuk maps.
+                                        Tekan tombol <strong class="uppercase tracking-tight">Temukan koordinat</strong> untuk mengisi latitude dan longitude secara otomatis.
                                     </div>
                                     <button @click="loading.showAlert = false" type="button" class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8" data-dismiss-target="#alert-3" aria-label="Close">
                                         <span class="sr-only">Close</span>
@@ -103,7 +115,7 @@ onMounted(() => {
                                 </div>
 
                                 <div class="flex justify-center my-4">
-                                    <PrimaryButton @click="getCurrentLocation" class="flex items-center">
+                                    <PrimaryButton id="find-me" class="flex items-center">
                                         <span v-if="loading.OnLoading">
                                             <svg class="inline mr-2 w-4 h-4 text-gray-400 animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -150,6 +162,10 @@ onMounted(() => {
                                 <div class="flex items-center justify-between">
                                     <h2 class="text-2xl font-bold">Maps</h2>
                                 </div>
+
+                                <p class="mt-4">
+                                    Pilih tempat melakukan presensi
+                                </p>
 
                                 <div id="map" class="h-[400px] rounded mt-2"></div>
                             </div>
