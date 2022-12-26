@@ -35,7 +35,7 @@ const showingNavigationDropdown = ref(false);
                                     Pegawai
                                 </NavLink>
 
-                                <NavLink :href="route('locations.index')" :active="route().current('locations.*')">
+                                <NavLink v-if="$page.props.permissions.manage" :href="route('locations.index')" :active="route().current('locations.*')">
                                     Lokasi
                                 </NavLink>
 
@@ -111,7 +111,7 @@ const showingNavigationDropdown = ref(false);
                             Pegawai
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink :href="route('locations.index')" :active="route().current('locations.*')">
+                        <ResponsiveNavLink v-if="$page.props.permissions.manage" :href="route('locations.index')" :active="route().current('locations.*')">
                             Lokasi
                         </ResponsiveNavLink>
 

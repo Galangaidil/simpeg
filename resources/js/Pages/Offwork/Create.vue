@@ -63,7 +63,7 @@ const data = reactive({photoContainer: null})
 
                                 <div class="mt-4">
                                     <InputLabel for="reason" value="Alasan" :required-data="true"/>
-                                    <TextareaInput class="mt-1 block w-full" v-model="form.reason" placeholder="Saya sakit gigi, kata Dokter harus istirahat dulu." />
+                                    <TextareaInput class="mt-1 block w-full" v-model="form.reason" placeholder="Dengan hormat, dengan ini bermaksud untuk mengajukan cuti ___ selama ___, Terhitung sejak tanggal ___ sampai dengan tanggal ___. Demikian permohonan cuti ini saya ajukan. Terima kasih banyak atas perhatian Bapak/Ibu." />
                                     <InputError class="mt-2" :message="form.errors.reason"/>
                                 </div>
 

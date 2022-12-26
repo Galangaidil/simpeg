@@ -24,7 +24,8 @@ const show = (id) => {
 
 const filteredItems = computed(() => {
     return props.users.filter(item => {
-        return item.name.toLowerCase().indexOf(data.search.toLowerCase()) > -1;
+        return item.name.toLowerCase().indexOf(data.search.toLowerCase()) > -1
+        || item.nip.toLowerCase().indexOf(data.search.toLocaleLowerCase()) > -1;
     })
 })
 </script>
@@ -57,16 +58,22 @@ const filteredItems = computed(() => {
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="py-3 px-6">
-                                        NIP
-                                    </th>
-                                    <th scope="col" class="py-3 px-6">
                                         Nama
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        Email
+                                        NIP
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
+                                        Alamat
                                     </th>
                                     <th scope="col" class="py-3 px-6">
                                         Nomor HP
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
+                                        Tempat lahir
+                                    </th>
+                                    <th scope="col" class="py-3 px-6">
+                                        Tanggal Lahir
                                     </th>
                                     <th scope="col" class="py-3 px-6 sr-only">
                                         Aksi
@@ -76,16 +83,22 @@ const filteredItems = computed(() => {
                                 <tbody>
                                 <tr class="bg-white border-b hover:bg-gray-100 cursor-pointer" v-for="user in filteredItems" :key="user.id" @click="show(user.id)">
                                     <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ user.nip }}
+                                        {{ user.name }}
                                     </th>
                                     <td class="py-4 px-6">
-                                        {{ user.name }}
+                                        {{ user.nip }}
                                     </td>
                                     <td class="py-4 px-6">
-                                        {{ user.email }}
+                                        {{ user.address }}
                                     </td>
                                     <td class="py-4 px-6">
                                         {{ user.phone_number }}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        {{ user.birthplace }}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        {{user.birthdate}}
                                     </td>
                                     <td class="py-4 px-6 flex justify-end">
                                         <Link :href="route('users.show', user.id)">
