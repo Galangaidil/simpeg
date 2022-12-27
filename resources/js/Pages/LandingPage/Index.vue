@@ -13,7 +13,10 @@ import {Head} from "@inertiajs/inertia-vue3";
 
 <template>
     <Head>
-        <title>Sistem Informasi kepegawaian</title>
+        <title>Sistem Informasi Kepegawaian</title>
+        <meta name="title" content="Simpeg">
+        <meta name="description" content="Sistem informasi kepegawaian paling canggih.
+        Dilengkapi dengan fitur presensi menggunakan lokasi, dan permohonan pengajuan cuti. Cobain sekarang!">
     </Head>
 
     <div class="bg-white dark:bg-gray-900">
